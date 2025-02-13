@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Марк](https://up.htmlacademy.ru/react-individual/3/user/2509141).
-* Наставник: `Неизвестно`.
+* Наставник: [Артём Новоселов](https://up.htmlacademy.ru/react-individual/3/user/1195129).
 
 ---
 
