@@ -1,12 +1,13 @@
+import City from 'components/city/city';
 import PlaceCard from 'components/place-card/place-card';
+import { Cities } from 'const';
 
 
 type MainProps = {
   placesCount: number;
 }
 
-// ❔ tabIndex={0} для tsx и tabIndex="0" для jsx?
-function Main({placesCount: placesCount}: MainProps): JSX.Element {
+function Main({placesCount}: MainProps) {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -43,36 +44,8 @@ function Main({placesCount: placesCount}: MainProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {/* ❔ Как правильно устанавливать key? */}
+              {Object.values(Cities).map((name) => <City name={name} activeCity={Cities.Amsterdam} key={name}/>)}
             </ul>
           </section>
         </div>
@@ -97,11 +70,7 @@ function Main({placesCount: placesCount}: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <PlaceCard/>
-                <PlaceCard/>
-                <PlaceCard/>
-                <PlaceCard/>
-                <PlaceCard/>
+                {Array.from({length: 5}, (_, index) => <PlaceCard key={index}/>)}
               </div>
             </section>
             <div className="cities__right-section">
