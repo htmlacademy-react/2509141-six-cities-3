@@ -2,7 +2,7 @@ import './not-found.css';
 import { Link } from 'react-router-dom';
 
 
-function NotFound(): JSX.Element {
+function NotFound() {
   return (
     <div className="page page--gray page--not-found">
       <Link className="page__logo-link" to="/">
