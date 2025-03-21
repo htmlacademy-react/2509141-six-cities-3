@@ -1,3 +1,5 @@
+export const MAX_RATING = 5;
+
 export enum AppRoute {
   Root = '/',
   Login = '/login',
@@ -11,11 +13,18 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export enum Cities {
+export enum CityName {
   Paris = 'Paris',
   Cologne = 'Cologne',
   Brussels = 'Brussels',
   Amsterdam = 'Amsterdam',
   Hamburg = 'Hamburg',
   Dusseldorf = 'Dusseldorf'
+}
+
+export enum OfferType {
+  Apartment = 'Apartment',
+  Room = 'Room',
+  House = 'House',
+  Hotel = 'Hotel'
 }
