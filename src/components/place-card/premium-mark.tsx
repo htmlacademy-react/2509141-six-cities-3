@@ -1,3 +1,7 @@
+// ❔ PremiumMark используется только вместе с PlaceCard.
+// Допустимо хранить их в одной директории?
+// Или один tsx строго в своей собственной папке?
+
 type PremiumMarkProps = {
   isPremium: boolean;
 }
