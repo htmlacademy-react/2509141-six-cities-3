@@ -1,13 +1,15 @@
 import City from 'components/city/city';
-import PlaceCard from 'components/place-card/place-card';
-import { Cities } from 'const';
+import PlacesList from 'components/places-list/places-list';
+import { ShortOffers } from 'types/offer';
+import { CityName } from 'const';
 
 
 type MainProps = {
   placesCount: number;
+  offers: ShortOffers;
 }
 
-function Main({placesCount}: MainProps) {
+function Main({placesCount, offers}: MainProps) {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -44,8 +46,7 @@ function Main({placesCount}: MainProps) {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {/* ❔ Как правильно устанавливать key? */}
-              {Object.values(Cities).map((name) => <City name={name} activeCity={Cities.Amsterdam} key={name}/>)}
+              {Object.values(CityName).map((name) => <City name={name} activeCity={CityName.Amsterdam} key={name} />)}
             </ul>
           </section>
         </div>
@@ -69,9 +70,7 @@ function Main({placesCount}: MainProps) {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {Array.from({length: 5}, (_, index) => <PlaceCard key={index}/>)}
-              </div>
+              {<PlacesList offers={offers} />}
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

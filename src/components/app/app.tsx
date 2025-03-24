@@ -6,19 +6,21 @@ import Favorites from 'pages/favorites/favorites';
 import NotFound from 'pages/not-found/not-found';
 import Offer from 'pages/offer/offer';
 import PrivateRoute from 'components/private-route/private-route';
+import { ShortOffers } from 'types/offer';
 
 
 type AppProps = {
   placesCount: number;
+  offers: ShortOffers;
 }
 
-function App({placesCount}: AppProps) {
+function App({placesCount, offers}: AppProps) {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Root}
-          element={<Main placesCount={placesCount} />}
+          element={<Main placesCount={placesCount} offers={offers} />}
         />
         <Route
           path={AppRoute.Login}
@@ -30,8 +32,8 @@ function App({placesCount}: AppProps) {
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-              <Favorites />
+            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <Favorites offers={offers} />
             </PrivateRoute>
           }
         />
