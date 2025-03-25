@@ -1,4 +1,5 @@
-import PremiumMark from './premiumMark';
+import { Link } from 'react-router-dom';
+import PremiumMark from 'components/premium-mark/premium-mark';
 import { ShortOffer } from 'types/offer';
 // ❔ без .ts
 // Module '"util"' has no exported member 'getPercentRating'.ts(2305)
@@ -24,7 +25,7 @@ function PlaceCard({offer, isFavoriteView, onMouseEnter}: PlaceCardProps) {
       className={`${cardClass}__card place-card`}
       onMouseEnter={onMouseEnter}
     >
-      <PremiumMark isPremium={offer.isPremium} />
+      <PremiumMark isPremium={offer.isPremium} isCardMode />
       <div className={`${cardClass}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
           <img className="place-card__image" src={offer.previewImage} width={width} height={height} alt="Place image"/>
@@ -52,12 +53,13 @@ function PlaceCard({offer, isFavoriteView, onMouseEnter}: PlaceCardProps) {
         <h2 className="place-card__name">
           {/*TODO: &amp;
            <a href="#">Beautiful &amp; luxurious apartment at great location</a> */}
-          <a href="#">{offer.title}</a>
+          <Link to={`offer/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
 }
+
 
 export default PlaceCard;
