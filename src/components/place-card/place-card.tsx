@@ -4,21 +4,20 @@ import { ShortOffer } from 'types/offer';
 // ❔ без .ts
 // Module '"util"' has no exported member 'getPercentRating'.ts(2305)
 import { getPercentRating } from 'util.ts';
+import BookmarkButton from 'components/bookmark-button/bookmark-button';
 
 
 type PlaceCardProps = {
   offer: ShortOffer;
-  isFavoriteView: boolean;
+  isFavoritePage: boolean;
   onMouseEnter?: () => void;
 }
 
-function PlaceCard({offer, isFavoriteView, onMouseEnter}: PlaceCardProps) {
-  const bookmarkButtonTitle = offer.isFavorite ? 'In' : 'To';
-  const activeClass = offer.isFavorite ? 'place-card__bookmark-button--active' : '';
-  const cardClass = isFavoriteView ? 'favorites' : 'cities';
-  const cardInfoClass = isFavoriteView ? 'favorites__card-info' : '';
-  const width = isFavoriteView ? 150 : 260;
-  const height = isFavoriteView ? 110 : 200;
+function PlaceCard({offer, isFavoritePage, onMouseEnter}: PlaceCardProps) {
+  const cardClass = isFavoritePage ? 'favorites' : 'cities';
+  const cardInfoClass = isFavoritePage ? 'favorites__card-info' : '';
+  const width = isFavoritePage ? 150 : 260;
+  const height = isFavoritePage ? 110 : 200;
 
   return (
     <article
@@ -37,12 +36,7 @@ function PlaceCard({offer, isFavoriteView, onMouseEnter}: PlaceCardProps) {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button ${activeClass} button`} type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{bookmarkButtonTitle} bookmarks</span>
-          </button>
+          <BookmarkButton isFavorite={offer.isFavorite} isCardMode />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
