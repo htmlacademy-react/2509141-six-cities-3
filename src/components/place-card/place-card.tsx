@@ -1,31 +1,32 @@
-import { Link } from 'react-router-dom';
+import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import PremiumMark from 'components/premium-mark/premium-mark';
+import { Link } from 'react-router-dom';
 import { ShortOffer } from 'types/offer';
+import { PlaceCardSource } from 'const';
 // ❔ без .ts
 // Module '"util"' has no exported member 'getPercentRating'.ts(2305)
 import { getPercentRating } from 'util.ts';
-import BookmarkButton from 'components/bookmark-button/bookmark-button';
 
 
 type PlaceCardProps = {
   offer: ShortOffer;
-  isFavoritePage: boolean;
+  source: PlaceCardSource;
   onMouseEnter?: () => void;
 }
 
-function PlaceCard({offer, isFavoritePage, onMouseEnter}: PlaceCardProps) {
-  const cardClass = isFavoritePage ? 'favorites' : 'cities';
-  const cardInfoClass = isFavoritePage ? 'favorites__card-info' : '';
-  const width = isFavoritePage ? 150 : 260;
-  const height = isFavoritePage ? 110 : 200;
+function PlaceCard({offer, source, onMouseEnter}: PlaceCardProps) {
+  const isFavorite = source === PlaceCardSource.Favorites;
+  const cardInfoClass = isFavorite ? 'favorites__card-info' : '';
+  const width = isFavorite ? 150 : 260;
+  const height = isFavorite ? 110 : 200;
 
   return (
     <article
-      className={`${cardClass}__card place-card`}
+      className={`${source}__card place-card`}
       onMouseEnter={onMouseEnter}
     >
       <PremiumMark isPremium={offer.isPremium} isCardMode />
-      <div className={`${cardClass}__image-wrapper place-card__image-wrapper`}>
+      <div className={`${source}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
           <img className="place-card__image" src={offer.previewImage} width={width} height={height} alt="Place image"/>
         </a>
@@ -40,7 +41,7 @@ function PlaceCard({offer, isFavoritePage, onMouseEnter}: PlaceCardProps) {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: getPercentRating(offer.rating).toString()}}></span>
+            <span style={{width: getPercentRating(offer.rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

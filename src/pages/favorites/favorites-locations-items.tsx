@@ -1,5 +1,5 @@
 import PlaceCard from 'components/place-card/place-card';
-import { CityName } from 'const';
+import { CityName, PlaceCardSource } from 'const';
 import { ShortOffers } from 'types/offer';
 
 
@@ -25,8 +25,8 @@ function FavoritesLocationsItems({offers, currentLocation}: FavoritesLocationsIt
         {currentLocationOffers.map((offer) => (
           <PlaceCard
             offer={offer}
+            source={PlaceCardSource.Favorites}
             key={offer.id}
-            isFavoriteView
           />
         ))}
       </div>

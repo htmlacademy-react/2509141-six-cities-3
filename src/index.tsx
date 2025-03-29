@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from 'components/app/app';
 import { shortOffers } from 'mocks/shortOffers';
+import { fullOffers } from 'mocks/fullOffers';
 
 
 const root = ReactDOM.createRoot(
@@ -10,6 +11,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App placesCount={10} offers={shortOffers}/>
+    <App placesCount={10} shortOffers={shortOffers} fullOffers={fullOffers} />
   </React.StrictMode>
 );

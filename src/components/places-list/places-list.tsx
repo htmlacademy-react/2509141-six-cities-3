@@ -1,6 +1,7 @@
 import PlaceCard from 'components/place-card/place-card';
 import { ShortOffers } from 'types/offer';
 import { useState } from 'react';
+import { PlaceCardSource } from 'const';
 
 
 type PlacesListProps = {
@@ -15,8 +16,8 @@ function PlacesList({offers}: PlacesListProps) {
       {offers.map((offer) => (
         <PlaceCard
           offer={offer}
+          source={PlaceCardSource.Main}
           key={offer.id}
-          isFavoriteView={false}
           onMouseEnter={() => {
             setActiveCardId(offer.id);
             // eslint-disable-next-line no-console
