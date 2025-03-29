@@ -1,6 +1,13 @@
 export const MAX_RATING = 5;
 export const RatingTitles = ['terribly', 'badly', 'not bad', 'good', 'perfect'];
 
+export enum PlaceCardSource {
+  Main = 'cities',
+  Favorites = 'favorites',
+  NearPlaces = 'near-places'
+}
+export const NEAR_PLACES_COUNT = 3;
+
 export enum AppRoute {
   Root = '/',
   Login = '/login',
@@ -30,9 +37,3 @@ export enum OfferType {
   Hotel = 'Hotel'
 }
 
-export enum PlaceCardSource {
-  Main = 'cities',
-  Favorites = 'favorites',
-  NearPlaces = 'near-places'
-}
-export const NEAR_PLACES_COUNT = 3;
