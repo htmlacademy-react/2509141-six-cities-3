@@ -1,10 +1,10 @@
-import {Navigate} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from 'const';
+import { Navigate } from 'react-router-dom';
+import { PropsWithChildren } from 'react';
+import { AppRoute, AuthorizationStatus } from 'const';
 
 
-type PrivateRouteProps = {
+type PrivateRouteProps = PropsWithChildren & {
   authorizationStatus: AuthorizationStatus;
-  children: JSX.Element;
 }
 
 function PrivateRoute({authorizationStatus, children}: PrivateRouteProps) {

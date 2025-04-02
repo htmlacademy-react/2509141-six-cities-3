@@ -7,7 +7,7 @@ import ReviewItem from 'components/review/review';
 import ReviewForm from 'components/review-form/review-form';
 import PlaceCard from 'components/place-card/place-card';
 import { reviews } from 'mocks/reviews';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ShortOffers, FullOffers } from 'types/offer';
 import { PlaceCardSource } from 'const';
 import { getPercentRating } from 'util.ts';
@@ -35,9 +35,9 @@ function Offer({shortOffers, fullOffers}: OfferProps) {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
+              <Link className="header__logo-link" to='/'>
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
+              </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">

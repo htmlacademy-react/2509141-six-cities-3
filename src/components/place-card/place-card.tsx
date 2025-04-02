@@ -2,7 +2,7 @@ import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import PremiumMark from 'components/premium-mark/premium-mark';
 import { Link } from 'react-router-dom';
 import { ShortOffer } from 'types/offer';
-import { PlaceCardSource } from 'const';
+import { AppRoute, PlaceCardSource } from 'const';
 // ❔ без .ts
 // Module '"util"' has no exported member 'getPercentRating'.ts(2305)
 import { getPercentRating } from 'util.ts';
@@ -15,7 +15,10 @@ type PlaceCardProps = {
 }
 
 function PlaceCard({offer, source, onMouseEnter}: PlaceCardProps) {
-  const isFavorite = source === PlaceCardSource.Favorites;
+  // ❔ Допустимо использовать подобный универсальный компонент, или вместо него всегда лучше применять паттерн «Контейнер»?
+  // Если заменить предварительные вычисления на 3 прокси-компонента, то вместо одного файла получится четыре.
+  // Таким образом отдельные компоненты станут проще, но сама структура проекта - сложнее. Хорошо ли это?
+  const isFavorite = (source === PlaceCardSource.Favorites);
   const cardInfoClass = isFavorite ? 'favorites__card-info' : '';
   const width = isFavorite ? 150 : 260;
   const height = isFavorite ? 110 : 200;
@@ -48,7 +51,7 @@ function PlaceCard({offer, source, onMouseEnter}: PlaceCardProps) {
         <h2 className="place-card__name">
           {/*TODO: &amp;
            <a href="#">Beautiful &amp; luxurious apartment at great location</a> */}
-          <Link to={`offer/${offer.id}`}>{offer.title}</Link>
+          <Link to={`${AppRoute.Offer}/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

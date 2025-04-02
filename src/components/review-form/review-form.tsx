@@ -22,7 +22,7 @@ function ReviewForm() {
     }
   };
 
-  const handleInput = (evt: FormEvent<HTMLTextAreaElement>) => {
+  const handleTextareaInput = (evt: FormEvent<HTMLTextAreaElement>) => {
     const inputText = evt.currentTarget.value;
 
     setText(inputText);
@@ -31,7 +31,7 @@ function ReviewForm() {
     checkDisabled();
   };
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(evt.target.value, 10);
 
     ratingRef.current = value;
@@ -41,7 +41,7 @@ function ReviewForm() {
   return (
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <div className="reviews__rating-form form__rating" onChange={handleChange}>
+      <div className="reviews__rating-form form__rating" onChange={handleInputChange}>
 
         {/* ❔ с map() не получилось, пришлось использовать reduceRight(). Хорошо ли это? */}
         {RatingTitles.reduceRight((stars: ReactNode[], title, index) => {
@@ -49,7 +49,7 @@ function ReviewForm() {
           return stars;
         }, [])}
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={text} onInput={handleInput}></textarea>
+      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={text} onInput={handleTextareaInput}></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
