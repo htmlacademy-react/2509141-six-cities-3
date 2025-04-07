@@ -1,9 +1,9 @@
-type CityProps = {
+type CityLinkProps = {
   name: string;
   activeCity: string;
 }
 
-function City({name, activeCity}: CityProps) {
+function CityLink({name, activeCity}: CityLinkProps) {
   return(
     <li className="locations__item">
       <a className={`locations__item-link tabs__item ${name === activeCity ? 'tabs__item--active' : ''}`} href="#">
@@ -14,4 +14,4 @@ function City({name, activeCity}: CityProps) {
 }
 
 
-export default City;
+export default CityLink;

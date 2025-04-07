@@ -1,16 +1,26 @@
-import City from 'components/city/city';
+import CityLink from 'components/city/city';
 import PlacesList from 'components/places-list/places-list';
 import { Link } from 'react-router-dom';
-import { ShortOffers } from 'types/offer';
+import { City, ShortOffer, ShortOffers } from 'types/offer';
 import { AppRoute, CityName } from 'const';
+import Map from 'components/map/map';
+import { useState } from 'react';
 
 
 type MainProps = {
   placesCount: number;
   offers: ShortOffers;
+  city: City;
 }
 
-function Main({placesCount, offers}: MainProps) {
+// TODO: вынести header из Main, Favorites и Offer в компонент
+function Main({placesCount, offers, city}: MainProps) {
+  const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
+
+  const handleListItemHover = (offer: ShortOffer) => {
+    setSelectedOffer(offer);
+  };
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -47,7 +57,7 @@ function Main({placesCount, offers}: MainProps) {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {Object.values(CityName).map((name) => <City name={name} activeCity={CityName.Amsterdam} key={name} />)}
+              {Object.values(CityName).map((name) => <CityLink name={name} activeCity={CityName.Amsterdam} key={name} />)}
             </ul>
           </section>
         </div>
@@ -71,10 +81,11 @@ function Main({placesCount, offers}: MainProps) {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              {<PlacesList offers={offers} />}
+              {<PlacesList offers={offers} onListItemHover={handleListItemHover} />}
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map city={city} offers={offers} selectedOffer={selectedOffer} />
+              {/* <section className="cities__map map"></section> */}
             </div>
           </div>
         </div>
