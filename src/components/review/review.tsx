@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { Review } from 'types/review';
-import { getPercentRating } from 'util.ts';
+import { getPercentRating } from 'utils/util';
 
 
 type ReviewItemProps = {

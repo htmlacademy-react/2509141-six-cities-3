@@ -10,18 +10,17 @@ import PrivateRoute from 'components/private-route/private-route';
 
 
 type AppProps = {
-  placesCount: number;
   shortOffers: ShortOffers;
   fullOffers: FullOffers;
 }
 
-function App({placesCount, shortOffers, fullOffers}: AppProps) {
+function App({shortOffers, fullOffers}: AppProps) {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Root}
-          element={<Main placesCount={placesCount} offers={shortOffers} />}
+          element={<Main offers={shortOffers} />}
         />
         <Route
           path={AppRoute.Login}
