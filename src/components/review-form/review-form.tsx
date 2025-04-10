@@ -1,13 +1,13 @@
+/* eslint-disable no-console */
 import Star from 'components/star/star';
 import { RatingTitles } from 'const';
 import { FormEvent, ChangeEvent, useState, useRef, ReactNode } from 'react';
 
 
-// ❔ Для корректной работы кнопки Submit пришлось использовать useRef параллельно с useState.
-// Хорошо ли это?
 function ReviewForm() {
   const [text, setText] = useState('');
   const textRef = useRef('');
+
   const ratingRef = useRef(0);
 
   const [disabled, setDisabled] = useState(true);
@@ -15,7 +15,15 @@ function ReviewForm() {
 
   // ❔ Вынести обработчики в отдельный файл?
   const checkDisabled = () => {
-    if ((textRef.current.length >= 50) && (ratingRef.current > 0)) {
+    // ❔ Как обойтись без useRef? State не обновляется вовремя.
+    console.log('State:', text.length); // Всё ещё 0
+    console.log('Ref:', textRef.current.length); // Уже > 0
+
+
+    const isMinLength = text.length >= 50;
+    const isRatingSelected = ratingRef.current > 0;
+
+    if (isMinLength && isRatingSelected) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -43,11 +51,11 @@ function ReviewForm() {
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating" onChange={handleInputChange}>
 
-        {/* ❔ с map() не получилось, пришлось использовать reduceRight(). Хорошо ли это? */}
         {RatingTitles.reduceRight((stars: ReactNode[], title, index) => {
-          stars.push(<Star value={index + 1} key={title} />);
+          stars.push(<Star value={index + 1} title={title} key={title} />);
           return stars;
         }, [])}
+        {/* {RatingTitles.map((title, index) => <Star value={index + 1} title={title} key={title} />)} */}
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={text} onInput={handleTextareaInput}></textarea>
       <div className="reviews__button-wrapper">

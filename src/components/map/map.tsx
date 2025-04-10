@@ -1,38 +1,46 @@
 import {useRef, useEffect} from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from 'hooks/use-map';
-import {City, ShortOffers, ShortOffer} from 'types/offer';
+import {ShortOffers, ShortOffer, Location} from 'types/offer';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from 'const';
 import 'leaflet/dist/leaflet.css';
 
 
 type MapProps = {
-  city: City;
-  offers: ShortOffers;
+  location: Location;
+  offers: ShortOffers | undefined;
   selectedOffer: ShortOffer | undefined;
 };
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
+  iconSize: [30, 40],
   iconAnchor: [20, 40]
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
+  iconSize: [30, 40],
   iconAnchor: [20, 40]
 });
 
-function Map(props: MapProps): JSX.Element {
-  const {city, offers, selectedOffer} = props;
+
+function Map({location, offers, selectedOffer}: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, location);
+  const markerLayer = useRef(layerGroup());
 
   useEffect(() => {
     if (map) {
-      const markerLayer = layerGroup().addTo(map);
+      map.setView([location.latitude, location.longitude], location.zoom);
+      markerLayer.current.addTo(map);
+      markerLayer.current.clearLayers();
+    }
+  }, [location, map]);
+
+  useEffect(() => {
+    if (map && offers) {
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
@@ -45,16 +53,12 @@ function Map(props: MapProps): JSX.Element {
               ? currentCustomIcon
               : defaultCustomIcon
           )
-          .addTo(markerLayer);
+          .addTo(markerLayer.current);
       });
-
-      return () => {
-        map.removeLayer(markerLayer);
-      };
     }
   }, [map, offers, selectedOffer]);
 
-  return <div className='cities__map map' ref={mapRef}></div>;
+  return <section className='cities__map map' ref={mapRef} />;
 }
 
 

@@ -29,6 +29,7 @@ export enum CityName {
   Hamburg = 'Hamburg',
   Dusseldorf = 'Dusseldorf'
 }
+export const DEFAULT_CITY = CityName.Amsterdam;
 
 export enum OfferType {
   Apartment = 'Apartment',
@@ -38,8 +39,7 @@ export enum OfferType {
 }
 
 export const URL_MARKER_DEFAULT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
+  'img/pin.svg';
 
 export const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
-
+  'img/pin-active.svg';

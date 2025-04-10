@@ -10,16 +10,16 @@ export const shortOffers: ShortOffers = [
     price: 141,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/8.jpg',
     city: {
-      name: CityName.Amsterdam,
+      name: CityName.Hamburg,
       location: {
-        latitude: 52.37454,
-        longitude: 4.897976,
+        latitude: 53.550341,
+        longitude: 10.000654,
         zoom: 13
       }
     },
     location: {
-      latitude: 52.3909553943508,
-      longitude: 4.85309666406198,
+      latitude: 53.528341000000005,
+      longitude: 10.018654000000002,
       zoom: 16
     },
     isFavorite: false,

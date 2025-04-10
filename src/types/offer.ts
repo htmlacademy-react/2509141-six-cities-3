@@ -11,6 +11,7 @@ export type City = {
   name: CityName;
   location: Location;
 };
+export type Cities = City[];
 
 export type Host = {
   name: string;
@@ -21,7 +22,7 @@ export type Host = {
 type BaseOffer = {
   id: string;
   title: string;
-  type: OfferType; // ❔ Использовал enum для типизации свойства объекта. Хорошо ли это?
+  type: OfferType;
   price: number;
   city: City;
   location: Location;

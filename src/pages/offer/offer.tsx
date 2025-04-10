@@ -10,7 +10,7 @@ import { reviews } from 'mocks/reviews';
 import { Link, useParams } from 'react-router-dom';
 import { ShortOffers, FullOffers } from 'types/offer';
 import { PlaceCardSource } from 'const';
-import { getPercentRating } from 'util.ts';
+import { getPercentRating } from 'utils/util';
 
 
 type OfferProps = {

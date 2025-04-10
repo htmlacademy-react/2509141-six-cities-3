@@ -4,14 +4,14 @@ import { PlaceCardSource } from 'const';
 
 
 type PlacesListProps = {
-  offers: ShortOffers;
+  offers: ShortOffers | undefined;
   onListItemHover: (offer: ShortOffer) => void;
 }
 
 function PlacesList({offers, onListItemHover}: PlacesListProps) {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => (
+      {offers?.map((offer) => (
         <PlaceCard
           offer={offer}
           source={PlaceCardSource.Main}

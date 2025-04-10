@@ -1,16 +1,15 @@
 import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import PremiumMark from 'components/premium-mark/premium-mark';
-import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { ShortOffer } from 'types/offer';
 import { AppRoute, PlaceCardSource } from 'const';
-import { getPercentRating } from 'util.ts';
+import { getPercentRating } from 'utils/util';
 
 
 type PlaceCardProps = {
   offer: ShortOffer;
   source: PlaceCardSource;
-  onListItemHover: (offer: ShortOffer) => void;
+  onListItemHover?: (offer: ShortOffer) => void;
 }
 
 function PlaceCard({offer, source, onListItemHover}: PlaceCardProps) {
@@ -19,15 +18,14 @@ function PlaceCard({offer, source, onListItemHover}: PlaceCardProps) {
   const width = isFavorite ? 150 : 260;
   const height = isFavorite ? 110 : 200;
 
-  const handleListItemHover = (event: MouseEvent<HTMLLIElement>) => {
-    event.preventDefault();
-    onListItemHover(offer);
+  const handleListItemHover = () => {
+    onListItemHover?.(offer);
   };
 
   return (
     <article
       className={`${source}__card place-card`}
-      onMouseEnter={handleListItemHover}
+      onMouseEnter={(handleListItemHover)}
     >
       <PremiumMark isPremium={offer.isPremium} isCardMode />
       <div className={`${source}__image-wrapper place-card__image-wrapper`}>
