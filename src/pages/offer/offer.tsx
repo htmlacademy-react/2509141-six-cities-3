@@ -2,10 +2,10 @@ import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import GoodsItem from 'components/goods-item/goods-item';
 import OfferImage from 'components/offer-image/offer-image';
 import PremiumMark from 'components/premium-mark/premium-mark';
-import NotFound from 'pages/not-found/not-found';
-import ReviewItem from 'components/review/review';
 import ReviewForm from 'components/review-form/review-form';
+import ReviewList from 'components/review-list/review-list';
 import PlaceCard from 'components/place-card/place-card';
+import NotFound from 'pages/not-found/not-found';
 import { reviews } from 'mocks/reviews';
 import { Link, useParams } from 'react-router-dom';
 import { ShortOffers, FullOffers } from 'types/offer';
@@ -134,9 +134,7 @@ function Offer({shortOffers, fullOffers}: OfferProps) {
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ul className="reviews__list">
-                  {reviews.slice(0, 10).map((review) => <ReviewItem review={review} key={review.id} />)}
-                </ul>
+                <ReviewList reviews={reviews}/>
                 <ReviewForm />
               </section>
             </div>
