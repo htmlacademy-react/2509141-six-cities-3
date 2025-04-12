@@ -1,15 +1,16 @@
 import {useRef, useEffect} from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from 'hooks/use-map';
-import {ShortOffers, ShortOffer, Location} from 'types/offer';
-import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from 'const';
+import {ShortOffers, ShortOffer, Location, FullOffer} from 'types/offer';
+import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT, MapType} from 'const';
 import 'leaflet/dist/leaflet.css';
 
 
 type MapProps = {
+  type: MapType;
   location: Location;
   offers: ShortOffers | undefined;
-  selectedOffer: ShortOffer | undefined;
+  selectedOffer: ShortOffer | FullOffer | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -25,7 +26,10 @@ const currentCustomIcon = new Icon({
 });
 
 
-function Map({location, offers, selectedOffer}: MapProps): JSX.Element {
+function Map({type, location, offers, selectedOffer}: MapProps) {
+  location = (selectedOffer && type === MapType.Offer)
+    ? selectedOffer.location
+    : location;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
@@ -58,7 +62,7 @@ function Map({location, offers, selectedOffer}: MapProps): JSX.Element {
     }
   }, [map, offers, selectedOffer]);
 
-  return <section className='cities__map map' ref={mapRef} />;
+  return <section className={`${type}__map map`} ref={mapRef} />;
 }
 
 
