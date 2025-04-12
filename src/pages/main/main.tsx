@@ -2,7 +2,7 @@ import CityLink from 'components/city-link/city-link';
 import PlacesList from 'components/places-list/places-list';
 import { Link } from 'react-router-dom';
 import { ShortOffer, ShortOffers } from 'types/offer';
-import { AppRoute, CityName, DEFAULT_CITY } from 'const';
+import { AppRoute, CityName, DEFAULT_CITY, MapType } from 'const';
 import Map from 'components/map/map';
 import { useState } from 'react';
 import { CityLocations } from 'mocks/cities';
@@ -100,7 +100,7 @@ function Main({offers}: MainProps) {
               {<PlacesList offers={activeOffers} onListItemHover={handleListItemHover} />}
             </section>
             <div className="cities__right-section">
-              <Map location={CityLocations[activeCity]} offers={activeOffers} selectedOffer={selectedOffer} />
+              <Map type={MapType.Main} location={CityLocations[activeCity]} offers={activeOffers} selectedOffer={selectedOffer} />
               {/* <section className="cities__map map"></section> */}
             </div>
           </div>

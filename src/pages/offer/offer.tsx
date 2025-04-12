@@ -2,15 +2,16 @@ import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import GoodsItem from 'components/goods-item/goods-item';
 import OfferImage from 'components/offer-image/offer-image';
 import PremiumMark from 'components/premium-mark/premium-mark';
-import NotFound from 'pages/not-found/not-found';
-import ReviewItem from 'components/review/review';
 import ReviewForm from 'components/review-form/review-form';
-import PlaceCard from 'components/place-card/place-card';
+import ReviewList from 'components/review-list/review-list';
+import NotFound from 'pages/not-found/not-found';
 import { reviews } from 'mocks/reviews';
 import { Link, useParams } from 'react-router-dom';
 import { ShortOffers, FullOffers } from 'types/offer';
-import { PlaceCardSource } from 'const';
+import { MapType } from 'const';
 import { getPercentRating } from 'utils/util';
+import Map from 'components/map/map';
+import NearPlaces from 'components/near-places/near-places';
 
 
 type OfferProps = {
@@ -134,23 +135,16 @@ function Offer({shortOffers, fullOffers}: OfferProps) {
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ul className="reviews__list">
-                  {reviews.slice(0, 10).map((review) => <ReviewItem review={review} key={review.id} />)}
-                </ul>
+                <ReviewList reviews={reviews}/>
                 <ReviewForm />
               </section>
             </div>
           </div>
-          <section className="offer__map map"></section>
+          {/* ❔ className="offer__map map" задают ширину карты на весь экран, что больше карты-заглушки. Хорошо ли это? */}
+          <Map type={MapType.Offer} location={offer.location} offers={shortOffers} selectedOffer={offer} />
+          {/* <section className="offer__map map"></section> */}
         </section>
-        <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              {shortOffers.slice(0, 3).map((shortOffer) => <PlaceCard offer={shortOffer} source={PlaceCardSource.NearPlaces} key={shortOffer.id} />)}
-            </div>
-          </section>
-        </div>
+        <NearPlaces offers={shortOffers} />
       </main>
     </div>
   );
