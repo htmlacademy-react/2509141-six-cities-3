@@ -21,7 +21,6 @@ function FavoritesLocationsItems({offers, currentLocation}: FavoritesLocationsIt
         </div>
       </div>
       <div className="favorites__places">
-        {/* ❔ Не лучше ли вынести в отдельную функцию? */}
         {currentLocationOffers.map((offer) => (
           <PlaceCard
             offer={offer}

@@ -4,15 +4,11 @@ type PremiumMarkProps = {
 }
 
 function PremiumMark({isPremium, isCardMode}: PremiumMarkProps) {
-  if (isPremium) {
-    return (
-      <div className={isCardMode ? 'place-card__mark' : 'offer__mark'}>
-        <span>Premium</span>
-      </div>
-    );
-  }
-
-  return null;
+  return isPremium && (
+    <div className={isCardMode ? 'place-card__mark' : 'offer__mark'}>
+      <span>Premium</span>
+    </div>
+  );
 }
 
 

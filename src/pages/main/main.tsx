@@ -1,16 +1,41 @@
-import City from 'components/city/city';
+import CityLink from 'components/city-link/city-link';
 import PlacesList from 'components/places-list/places-list';
 import { Link } from 'react-router-dom';
-import { ShortOffers } from 'types/offer';
-import { AppRoute, CityName } from 'const';
+import { ShortOffer, ShortOffers } from 'types/offer';
+import { AppRoute, CityName, DEFAULT_CITY } from 'const';
+import Map from 'components/map/map';
+import { useState } from 'react';
+import { CityLocations } from 'mocks/cities';
+import { findOffersInCity } from 'utils/util';
 
 
 type MainProps = {
-  placesCount: number;
   offers: ShortOffers;
 }
 
-function Main({placesCount, offers}: MainProps) {
+// TODO: вынести header из Main, Favorites и Offer в компонент
+function Main({offers}: MainProps) {
+  const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
+
+  const [activeOffers, setActiveOffers] = useState(findOffersInCity(offers, DEFAULT_CITY));
+  const [placesCount, setPlacesCount] = useState(activeOffers.length);
+  const [activeCity, setActiveCity] = useState<CityName>(DEFAULT_CITY);
+
+
+  const handleListItemHover = (offer: ShortOffer) => {
+    setSelectedOffer(offer);
+  };
+
+  const handleCityClick = (name: CityName) => {
+    setActiveCity(name);
+
+    const foundOffers = findOffersInCity(offers, name);
+    setActiveOffers(foundOffers);
+
+    setPlacesCount(foundOffers.length);
+  };
+
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -47,7 +72,7 @@ function Main({placesCount, offers}: MainProps) {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {Object.values(CityName).map((name) => <City name={name} activeCity={CityName.Amsterdam} key={name} />)}
+              {Object.values(CityName).map((name) => <CityLink name={name} activeCity={activeCity} key={name} onClick={handleCityClick} />)}
             </ul>
           </section>
         </div>
@@ -55,7 +80,7 @@ function Main({placesCount, offers}: MainProps) {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesCount} places to stay in Amsterdam</b>
+              <b className="places__found">{placesCount} places to stay in {activeCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -71,10 +96,12 @@ function Main({placesCount, offers}: MainProps) {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              {<PlacesList offers={offers} />}
+              {/* ❔ Теперь при смене города остаются артефакты. Кто виноват и что делать? */}
+              {<PlacesList offers={activeOffers} onListItemHover={handleListItemHover} />}
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map location={CityLocations[activeCity]} offers={activeOffers} selectedOffer={selectedOffer} />
+              {/* <section className="cities__map map"></section> */}
             </div>
           </div>
         </div>

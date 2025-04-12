@@ -11,6 +11,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App placesCount={10} shortOffers={shortOffers} fullOffers={fullOffers} />
+    <App shortOffers={shortOffers} fullOffers={fullOffers} />
   </React.StrictMode>
 );
