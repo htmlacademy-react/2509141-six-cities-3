@@ -1,4 +1,3 @@
-import CityLink from 'components/city-link/city-link';
 import PlacesList from 'components/places-list/places-list';
 import { Link } from 'react-router-dom';
 import { ShortOffer, ShortOffers } from 'types/offer';
@@ -7,6 +6,7 @@ import Map from 'components/map/map';
 import { useState } from 'react';
 import { CityLocations } from 'mocks/cities';
 import { findOffersInCity } from 'utils/util';
+import CityList from 'components/city-list/city-list';
 
 
 type MainProps = {
@@ -69,13 +69,7 @@ function Main({offers}: MainProps) {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {Object.values(CityName).map((name) => <CityLink name={name} activeCity={activeCity} key={name} onClick={handleCityClick} />)}
-            </ul>
-          </section>
-        </div>
+        <CityList activeCity={activeCity} onClick={handleCityClick} />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
@@ -96,12 +90,10 @@ function Main({offers}: MainProps) {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              {/* ❔ Теперь при смене города остаются артефакты. Кто виноват и что делать? */}
               {<PlacesList offers={activeOffers} onListItemHover={handleListItemHover} />}
             </section>
             <div className="cities__right-section">
               <Map type={MapType.Main} location={CityLocations[activeCity]} offers={activeOffers} selectedOffer={selectedOffer} />
-              {/* <section className="cities__map map"></section> */}
             </div>
           </div>
         </div>
