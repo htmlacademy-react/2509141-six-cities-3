@@ -1,25 +1,30 @@
 import PlacesList from 'components/places-list/places-list';
-import { Link } from 'react-router-dom';
-import { ShortOffer, ShortOffers } from 'types/offer';
-import { AppRoute, CityName, DEFAULT_CITY, MapType } from 'const';
+import CityList from 'components/city-list/city-list';
 import Map from 'components/map/map';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppRoute, CityName, DEFAULT_CITY, MapSource } from 'const';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import { ShortOffer } from 'types/offer';
 import { CityLocations } from 'mocks/cities';
 import { findOffersInCity } from 'utils/util';
-import CityList from 'components/city-list/city-list';
+import { selectCity } from 'store/action';
 
-
-type MainProps = {
-  offers: ShortOffers;
-}
 
 // TODO: вынести header из Main, Favorites и Offer в компонент
-function Main({offers}: MainProps) {
+function Main() {
+  const dispatch = useAppDispatch();
+
+  // ❔ Зачем хранить выбранный город в глобальном состоянии, если хватало и локального?
+  // ❔ selectedOffer, activeOffers и placesCount тоже перенести в хранилище?
+  const activeCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.shortOffers);
+
+
   const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
 
   const [activeOffers, setActiveOffers] = useState(findOffersInCity(offers, DEFAULT_CITY));
   const [placesCount, setPlacesCount] = useState(activeOffers.length);
-  const [activeCity, setActiveCity] = useState<CityName>(DEFAULT_CITY);
 
 
   const handleListItemHover = (offer: ShortOffer) => {
@@ -27,12 +32,12 @@ function Main({offers}: MainProps) {
   };
 
   const handleCityClick = (name: CityName) => {
-    setActiveCity(name);
-
     const foundOffers = findOffersInCity(offers, name);
     setActiveOffers(foundOffers);
 
     setPlacesCount(foundOffers.length);
+
+    dispatch(selectCity({city: name}));
   };
 
 
@@ -93,7 +98,7 @@ function Main({offers}: MainProps) {
               {<PlacesList offers={activeOffers} onListItemHover={handleListItemHover} />}
             </section>
             <div className="cities__right-section">
-              <Map type={MapType.Main} location={CityLocations[activeCity]} offers={activeOffers} selectedOffer={selectedOffer} />
+              <Map source={MapSource.Main} location={CityLocations[activeCity]} offers={activeOffers} selectedOffer={selectedOffer} />
             </div>
           </div>
         </div>

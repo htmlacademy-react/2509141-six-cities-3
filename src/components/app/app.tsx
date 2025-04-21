@@ -1,6 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from 'const';
-import { FullOffers, ShortOffers } from 'types/offer';
 import Main from 'pages/main/main';
 import Login from 'pages/login/login';
 import Favorites from 'pages/favorites/favorites';
@@ -9,31 +8,26 @@ import Offer from 'pages/offer/offer';
 import PrivateRoute from 'components/private-route/private-route';
 
 
-type AppProps = {
-  shortOffers: ShortOffers;
-  fullOffers: FullOffers;
-}
-
-function App({shortOffers, fullOffers}: AppProps) {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Root}
-          element={<Main offers={shortOffers} />}
+          element={<Main />}
         />
         <Route
           path={AppRoute.Login}
           element={<Login />}
         />
         <Route path={AppRoute.Offer}>
-          <Route path=':id' element={<Offer shortOffers={shortOffers} fullOffers={fullOffers} />} />
+          <Route path=':id' element={<Offer />} />
         </Route>
         <Route
           path={AppRoute.Favorites}
           element={
             <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-              <Favorites offers={shortOffers} />
+              <Favorites />
             </PrivateRoute>
           }
         />
