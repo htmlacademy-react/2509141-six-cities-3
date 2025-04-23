@@ -1,13 +1,11 @@
 import FavoritePlacesList from 'components/favorite-places-list/favorite-places-list';
+import { useAppSelector } from 'hooks';
 import { Link } from 'react-router-dom';
-import { ShortOffers } from 'types/offer';
 
 
-type FavoritesProps = {
-  offers: ShortOffers;
-}
+function Favorites() {
+  const offers = useAppSelector((state) => state.shortOffers);
 
-function Favorites({offers}: FavoritesProps) {
   return(
     <div className="page">
       <header className="header">
@@ -55,5 +53,6 @@ function Favorites({offers}: FavoritesProps) {
     </div>
   );
 }
+
 
 export default Favorites;

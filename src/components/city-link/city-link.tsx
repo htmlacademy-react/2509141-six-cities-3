@@ -9,11 +9,12 @@ type CityLinkProps = {
 }
 
 function CityLink({name, activeCity, onClick}: CityLinkProps) {
-  const handleCityClick = () => {
+  const handleCityClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
     onClick(name);
   };
 
-  return(
+  return (
     <li className="locations__item">
       <Link className={`locations__item-link tabs__item ${name === activeCity ? 'tabs__item--active' : ''}`} to="/" onClick={handleCityClick}>
         <span>{name}</span>

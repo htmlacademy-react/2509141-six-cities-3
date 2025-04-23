@@ -1,3 +1,9 @@
+export type RatingTitle = {
+  value: number;
+  name: string;
+}
+export type RatingTitles = RatingTitle[];
+
 export type User = {
   name: string;
   avatarUrl: string;

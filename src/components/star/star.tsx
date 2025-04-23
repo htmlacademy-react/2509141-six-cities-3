@@ -1,18 +1,18 @@
 import { Fragment } from 'react';
+import { RatingTitle } from 'types/review';
 
 
 type StarProps = {
-  value: number;
-  title: string;
+  title: RatingTitle;
 }
 
-function Star({value, title}: StarProps) {
+function Star({title: {value, name}}: StarProps) {
   const id = `${value}-stars`;
 
   return (
     <Fragment>
       <input className="form__rating-input visually-hidden" name="rating" value={value} id={id} type="radio"/>
-      <label htmlFor={id} className="reviews__rating-label form__rating-label" title={title}>
+      <label htmlFor={id} className="reviews__rating-label form__rating-label" title={name}>
         <svg className="form__star-image" width="37" height="33">
           <use xlinkHref="#icon-star"></use>
         </svg>
