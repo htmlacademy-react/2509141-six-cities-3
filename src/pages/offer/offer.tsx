@@ -8,14 +8,13 @@ import NearPlaces from 'components/near-places/near-places';
 import GoodsItem from 'components/goods-item/goods-item';
 import NotFound from 'pages/not-found/not-found';
 import Map from 'components/map/map';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { getPercentRating } from 'utils/util';
+import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { fetchNearbyOffersAction, fetchOfferAction } from 'store/api-actions';
-import { setOffer, setError } from 'store/action';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { AppRoute, MapSource } from 'const';
+import { setOffer, setError } from 'store/action';
+import { getPercentRating } from 'utils/util';
 import { useEffect } from 'react';
-import { reviews } from 'mocks/reviews';
 
 
 function Offer() {
@@ -26,6 +25,7 @@ function Offer() {
   const offer = useAppSelector((state) => state.fullOffer);
   const error = useAppSelector((state) => state.error);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const reviews = useAppSelector((state) => state.reviews);
 
   const isLoading = (offer === undefined);
 
@@ -33,6 +33,7 @@ function Offer() {
   useEffect(() => {
     dispatch(fetchOfferAction(id));
     dispatch(fetchNearbyOffersAction(id));
+    dispatch(fetchReviewsAction(id));
 
     return () => {
       dispatch(setOffer(undefined));

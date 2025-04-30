@@ -59,6 +59,7 @@ export const URL_MARKER_CURRENT =
 
 export enum APIRoute {
   Offers = '/offers',
+  Reviews = '/comments',
   Login = '/login',
   Logout = '/logout'
 }

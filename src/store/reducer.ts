@@ -1,8 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers, setReviews } from './action';
 import { CityName, DEFAULT_CITY } from 'const';
-import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers } from './action';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { ErrorInfo } from 'types/state';
+import { Reviews } from 'types/review';
 
 
 type InitialState = {
@@ -10,6 +11,7 @@ type InitialState = {
   shortOffers: ShortOffers;
   nearbyOffers: ShortOffers;
   fullOffer?: FullOffer;
+  reviews: Reviews;
   isOffersLoading: boolean;
   error?: ErrorInfo;
 }
@@ -18,6 +20,7 @@ const initialState: InitialState = {
   city: DEFAULT_CITY,
   shortOffers: [],
   nearbyOffers: [],
+  reviews: [],
   isOffersLoading: false,
 };
 
@@ -39,6 +42,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOffer, (state, action) => {
       state.fullOffer = action.payload;
+    })
+    .addCase(setReviews, (state, action) => {
+      state.reviews = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
