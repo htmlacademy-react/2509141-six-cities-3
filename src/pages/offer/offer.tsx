@@ -1,19 +1,21 @@
 import BookmarkButton from 'components/bookmark-button/bookmark-button';
-import GoodsItem from 'components/goods-item/goods-item';
-import OfferImage from 'components/offer-image/offer-image';
+import LoadingScreen from 'pages/loading-screen/loading-screen';
 import PremiumMark from 'components/premium-mark/premium-mark';
+import OfferImage from 'components/offer-image/offer-image';
 import ReviewForm from 'components/review-form/review-form';
 import ReviewList from 'components/review-list/review-list';
+import NearPlaces from 'components/near-places/near-places';
+import GoodsItem from 'components/goods-item/goods-item';
 import NotFound from 'pages/not-found/not-found';
-import { reviews } from 'mocks/reviews';
+import Map from 'components/map/map';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { getPercentRating } from 'utils/util';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { fetchOfferAction } from 'store/api-actions';
-import { useEffect } from 'react';
+import { fetchNearbyOffersAction, fetchOfferAction } from 'store/api-actions';
 import { setOffer, setError } from 'store/action';
-import LoadingScreen from 'pages/loading-screen/loading-screen';
-import { AppRoute } from 'const';
+import { AppRoute, MapSource } from 'const';
+import { useEffect } from 'react';
+import { reviews } from 'mocks/reviews';
 
 
 function Offer() {
@@ -23,12 +25,14 @@ function Offer() {
   const dispatch = useAppDispatch();
   const offer = useAppSelector((state) => state.fullOffer);
   const error = useAppSelector((state) => state.error);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
 
   const isLoading = (offer === undefined);
 
 
   useEffect(() => {
     dispatch(fetchOfferAction(id));
+    dispatch(fetchNearbyOffersAction(id));
 
     return () => {
       dispatch(setOffer(undefined));
@@ -152,9 +156,9 @@ function Offer() {
               </section>
             </div>
           </div>
-          {/* <Map source={MapSource.Offer} location={offer.location} offers={shortOffers} selectedOffer={offer} /> */}
+          <Map source={MapSource.Offer} location={offer.location} offers={nearbyOffers} selectedOffer={offer} />
         </section>
-        {/* <NearPlaces offers={shortOffers} /> */}
+        <NearPlaces offers={nearbyOffers} />
       </main>
     </div>
   );
