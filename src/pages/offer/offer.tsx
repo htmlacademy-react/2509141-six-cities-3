@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from 'hooks';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { AppRoute, MapSource } from 'const';
 import { setOffer, setError } from 'store/action';
-import { getPercentRating } from 'utils/util';
+import { getPercentRating, upFirstLetter } from 'utils/util';
 import { useEffect } from 'react';
 
 
@@ -110,7 +110,7 @@ function Offer() {
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {offer.type}
+                  {upFirstLetter(offer.type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
                   {offer.bedrooms} {(offer.bedrooms > 1) ? 'Bedrooms' : 'Bedroom'}

@@ -45,10 +45,10 @@ export enum CityName {
 export const DEFAULT_CITY = CityName.Paris;
 
 export enum OfferType {
-  Apartment = 'Apartment',
-  Room = 'Room',
-  House = 'House',
-  Hotel = 'Hotel'
+  Apartment = 'apartment',
+  Room = 'room',
+  House = 'house',
+  Hotel = 'hotel'
 }
 
 export const URL_MARKER_DEFAULT =
