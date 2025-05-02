@@ -4,7 +4,7 @@ import SpinnerOptions from './spinner-options';
 import 'spin.js/spin.css';
 
 
-function LoadingScreen() {
+function Loading() {
   const container = useRef(null);
 
 
@@ -27,4 +27,4 @@ function LoadingScreen() {
 }
 
 
-export default LoadingScreen;
+export default Loading;

@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers, setReviews } from './action';
-import { CityName, DEFAULT_CITY } from 'const';
+import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization } from './action';
+import { CityName, DEFAULT_CITY, AuthorizationStatus } from 'const';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { ErrorInfo } from 'types/state';
 import { Reviews } from 'types/review';
@@ -14,6 +14,7 @@ type InitialState = {
   reviews: Reviews;
   isOffersLoading: boolean;
   error?: ErrorInfo;
+  authorizationStatus: AuthorizationStatus;
 }
 
 const initialState: InitialState = {
@@ -22,6 +23,7 @@ const initialState: InitialState = {
   nearbyOffers: [],
   reviews: [],
   isOffersLoading: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -48,6 +50,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 

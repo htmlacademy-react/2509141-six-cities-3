@@ -7,7 +7,7 @@ import Favorites from 'pages/favorites/favorites';
 import NotFound from 'pages/not-found/not-found';
 import Offer from 'pages/offer/offer';
 import PrivateRoute from 'components/private-route/private-route';
-import LoadingScreen from 'pages/loading-screen/loading-screen';
+import Loading from 'pages/loading/loading';
 
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
 
   if (isOffersLoading) {
     return (
-      <LoadingScreen />
+      <Loading />
     );
   }
 

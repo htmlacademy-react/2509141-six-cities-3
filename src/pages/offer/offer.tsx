@@ -1,5 +1,5 @@
 import BookmarkButton from 'components/bookmark-button/bookmark-button';
-import LoadingScreen from 'pages/loading-screen/loading-screen';
+import Loading from 'pages/loading/loading';
 import PremiumMark from 'components/premium-mark/premium-mark';
 import OfferImage from 'components/offer-image/offer-image';
 import ReviewForm from 'components/review-form/review-form';
@@ -51,7 +51,7 @@ function Offer() {
   }
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return <Loading />;
   }
 
   return (
