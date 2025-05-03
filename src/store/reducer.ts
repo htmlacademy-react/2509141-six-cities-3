@@ -1,14 +1,27 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { DEFAULT_CITY } from 'const';
-import { fullOffers } from 'mocks/fullOffers';
-import { shortOffers } from 'mocks/shortOffers';
-import { selectCity } from './action';
+import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers, setReviews } from './action';
+import { CityName, DEFAULT_CITY } from 'const';
+import { FullOffer, ShortOffers } from 'types/offer';
+import { ErrorInfo } from 'types/state';
+import { Reviews } from 'types/review';
 
 
-const initialState = {
+type InitialState = {
+  city: CityName;
+  shortOffers: ShortOffers;
+  nearbyOffers: ShortOffers;
+  fullOffer?: FullOffer;
+  reviews: Reviews;
+  isOffersLoading: boolean;
+  error?: ErrorInfo;
+}
+
+const initialState: InitialState = {
   city: DEFAULT_CITY,
-  shortOffers: shortOffers,
-  fullOffers: fullOffers
+  shortOffers: [],
+  nearbyOffers: [],
+  reviews: [],
+  isOffersLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -17,6 +30,24 @@ const reducer = createReducer(initialState, (builder) => {
       const {city} = action.payload;
 
       state.city = city;
+    })
+    .addCase(setOffersLoadingStatus, (state, action) => {
+      state.isOffersLoading = action.payload;
+    })
+    .addCase(setOffers, (state, action) => {
+      state.shortOffers = action.payload;
+    })
+    .addCase(setNearbyOffers, (state, action) => {
+      state.nearbyOffers = action.payload;
+    })
+    .addCase(setOffer, (state, action) => {
+      state.fullOffer = action.payload;
+    })
+    .addCase(setReviews, (state, action) => {
+      state.reviews = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 

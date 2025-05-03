@@ -3,7 +3,7 @@ import PremiumMark from 'components/premium-mark/premium-mark';
 import { Link } from 'react-router-dom';
 import { ShortOffer } from 'types/offer';
 import { AppRoute, PlaceCardSource } from 'const';
-import { getPercentRating } from 'utils/util';
+import { getPercentRating, upFirstLetter } from 'utils/util';
 
 
 type PlaceCardProps = {
@@ -52,7 +52,7 @@ function PlaceCard({offer, source, onListItemHover}: PlaceCardProps) {
            <a href="#">Beautiful &amp; luxurious apartment at great location</a> */}
           <Link to={`${AppRoute.Offer}/${offer.id}`}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{upFirstLetter(offer.type)}</p>
       </div>
     </article>
   );

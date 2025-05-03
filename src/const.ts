@@ -45,10 +45,10 @@ export enum CityName {
 export const DEFAULT_CITY = CityName.Paris;
 
 export enum OfferType {
-  Apartment = 'Apartment',
-  Room = 'Room',
-  House = 'House',
-  Hotel = 'Hotel'
+  Apartment = 'apartment',
+  Room = 'room',
+  House = 'house',
+  Hotel = 'hotel'
 }
 
 export const URL_MARKER_DEFAULT =
@@ -56,3 +56,10 @@ export const URL_MARKER_DEFAULT =
 
 export const URL_MARKER_CURRENT =
   'img/pin-active.svg';
+
+export enum APIRoute {
+  Offers = '/offers',
+  Reviews = '/comments',
+  Login = '/login',
+  Logout = '/logout'
+}
