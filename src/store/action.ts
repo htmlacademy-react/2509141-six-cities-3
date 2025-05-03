@@ -17,3 +17,5 @@ export const setOffersLoadingStatus = createAction<boolean>('setOffersLoadingSta
 export const setError = createAction<ErrorInfo | undefined>('setError');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+export const setEmail = createAction<string | undefined>('user/setEmail');
+
