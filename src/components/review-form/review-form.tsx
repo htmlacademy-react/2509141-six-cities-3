@@ -1,6 +1,7 @@
 import Star from 'components/star/star';
 import { RatingTitles } from 'const';
 import { FormEvent, ChangeEvent, useState } from 'react';
+import { isDisabled } from './utils';
 
 
 function ReviewForm() {
@@ -8,14 +9,6 @@ function ReviewForm() {
   const [rating, setRating] = useState(0);
 
 
-  const isDisabled = () => {
-    const isMinLength = text.length >= 50;
-    const isRatingSelected = rating > 0;
-
-    return !(isMinLength && isRatingSelected);
-  };
-
-  // ❔ Вынести обработчики в отдельный файл?
   const handleTextareaInput = (evt: FormEvent<HTMLTextAreaElement>) => {
     const inputText = evt.currentTarget.value;
 
@@ -40,7 +33,7 @@ function ReviewForm() {
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isDisabled()}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={isDisabled(text, rating)}>Submit</button>
       </div>
     </form>
   );
