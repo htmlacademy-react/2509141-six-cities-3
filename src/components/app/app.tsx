@@ -1,5 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from 'const';
+import { AppRoute } from 'const';
 import { useAppSelector } from 'hooks';
 import Main from 'pages/main/main';
 import Login from 'pages/login/login';
@@ -7,18 +7,16 @@ import Favorites from 'pages/favorites/favorites';
 import NotFound from 'pages/not-found/not-found';
 import Offer from 'pages/offer/offer';
 import PrivateRoute from 'components/private-route/private-route';
-import LoadingScreen from 'pages/loading-screen/loading-screen';
+import Loading from 'pages/loading/loading';
 
 
 function App() {
   const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
-
   if (isOffersLoading) {
     return (
-      <LoadingScreen />
+      <Loading />
     );
   }
-
 
   return (
     <BrowserRouter>
@@ -37,7 +35,7 @@ function App() {
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+            <PrivateRoute>
               <Favorites />
             </PrivateRoute>
           }

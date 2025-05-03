@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { CityName } from 'const';
+import { AuthorizationStatus, CityName } from 'const';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { Reviews } from 'types/review';
 import { ErrorInfo } from 'types/state';
@@ -15,3 +15,7 @@ export const setReviews = createAction<Reviews>('setReviews');
 
 export const setOffersLoadingStatus = createAction<boolean>('setOffersLoadingStatus');
 export const setError = createAction<ErrorInfo | undefined>('setError');
+
+export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+export const setEmail = createAction<string | undefined>('user/setEmail');
+
