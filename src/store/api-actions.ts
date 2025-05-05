@@ -1,6 +1,6 @@
 import { AxiosError, AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail } from './action';
+import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers } from './action';
 import { AppDispatch, ErrorInfo, State } from 'types/state.js';
 import { FullOffer, ShortOffers } from 'types/offer.js';
 import { APIRoute, AuthorizationStatus } from 'const';
@@ -15,7 +15,7 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'loadOffers',
+  'data/fetchOffers',
   async (_arg, { dispatch, extra: api }) => {
     dispatch(setOffersLoadingStatus(true));
 
@@ -36,12 +36,25 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
 );
 
 
+export const fetchFavoritesAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFavorites',
+  async (_arg, { dispatch, extra: api }) => {
+    await api.get<ShortOffers>(`${APIRoute.Favorites}`)
+      .then((response) => dispatch(setFavoriteOffers(response.data)));
+  },
+);
+
+
 export const fetchOfferAction = createAsyncThunk<void, string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'loadOffer',
+  'data/fetchOffer',
   async (id, { dispatch, extra: api }) => {
     await api.get<FullOffer>(`${APIRoute.Offers}/${id}`)
       .then((response) => dispatch(setOffer(response.data)))
@@ -63,7 +76,7 @@ export const fetchNearbyOffersAction = createAsyncThunk<void, string, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'loadNearbyOffers',
+  'data/fetchNearbyOffers',
   async (id, { dispatch, extra: api }) => {
     await api.get<ShortOffers>(`${APIRoute.Offers}/${id}/nearby`)
       .then((response) => dispatch(setNearbyOffers(response.data)))
@@ -85,7 +98,7 @@ export const fetchReviewsAction = createAsyncThunk<void, string, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'loadReviews',
+  'data/fetchReviews',
   async (id, { dispatch, extra: api }) => {
     await api.get<Reviews>(`${APIRoute.Reviews}/${id}`)
       .then((response) => dispatch(setReviews(response.data)))
@@ -101,7 +114,7 @@ export const fetchReviewsAction = createAsyncThunk<void, string, {
   }
 );
 
-// ❔ Какой вариант предпочтительнее -- .then.catch или try {} catch {}
+
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;

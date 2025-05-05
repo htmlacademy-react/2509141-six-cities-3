@@ -4,10 +4,7 @@ import { AppRoute, AuthorizationStatus } from 'const';
 import { useAppSelector } from 'hooks';
 
 
-// ❔ Как правильно оформлять детей, если кроме них ничего нет?
-type PrivateRouteProps = PropsWithChildren;
-
-function PrivateRoute({ children }: PrivateRouteProps) {
+function PrivateRoute({ children }: PropsWithChildren) {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   return (
