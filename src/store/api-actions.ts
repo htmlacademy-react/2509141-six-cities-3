@@ -1,6 +1,6 @@
 import { AxiosError, AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers } from './action';
+import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus } from './action';
 import { AppDispatch, ErrorInfo, State } from 'types/state.js';
 import { FullOffer, ShortOffers } from 'types/offer.js';
 import { APIRoute, AuthorizationStatus } from 'const';
@@ -45,6 +45,43 @@ export const fetchFavoritesAction = createAsyncThunk<void, undefined, {
   async (_arg, { dispatch, extra: api }) => {
     await api.get<ShortOffers>(`${APIRoute.Favorites}`)
       .then((response) => dispatch(setFavoriteOffers(response.data)));
+  },
+);
+
+
+// ❔ Допустимо ли в createAsyncThunk вынести повторяющийся код в отдельную функцию?
+// Как это правильно оформить?
+export const addToFavoritesAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/addToFavorites',
+  async (id, { dispatch, getState, extra: api }) => {
+    const state = getState();
+    const authorizationStatus = state.authorizationStatus;
+
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      await api.post<ShortOffers>(`${APIRoute.Favorites}/${id}/1`)
+        .then(() => dispatch(toggleFavoriteStatus(id)));
+    }
+  }
+);
+
+export const removeFromFavoritesAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/removeFromFavorites',
+  async (id, { dispatch, getState, extra: api }) => {
+    const state = getState();
+    const authorizationStatus = state.authorizationStatus;
+
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      await api.post<ShortOffers>(`${APIRoute.Favorites}/${id}/0`)
+        .then(() => dispatch(toggleFavoriteStatus(id)));
+    }
   },
 );
 

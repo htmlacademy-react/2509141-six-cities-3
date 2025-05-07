@@ -39,7 +39,7 @@ function PlaceCard({offer, source, onListItemHover}: PlaceCardProps) {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <BookmarkButton isFavorite={offer.isFavorite} isCardMode />
+          <BookmarkButton offerId={offer.id} isFavoriteInitially={offer.isFavorite} isCardMode />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

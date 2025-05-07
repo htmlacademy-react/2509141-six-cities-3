@@ -10,6 +10,7 @@ export const selectCity = createAction<{city: CityName}>('offers/selectCity');
 
 export const setOffers = createAction<ShortOffers>('offers/setOffers');
 export const setFavoriteOffers = createAction<ShortOffers>('offers/setFavoriteOffers');
+export const toggleFavoriteStatus = createAction<string>('offers/toggleFavoriteStatus');
 
 export const setOffer = createAction<FullOffer | undefined>('offer/setOffer');
 export const setReviews = createAction<Reviews>('offer/setReviews');

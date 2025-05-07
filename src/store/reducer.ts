@@ -1,9 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers } from './action';
+import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus } from './action';
 import { CityName, DEFAULT_CITY, AuthorizationStatus } from 'const';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { ErrorInfo } from 'types/state';
 import { Reviews } from 'types/review';
+import { findOffer } from 'utils/util';
 
 
 type InitialState = {
@@ -49,6 +50,23 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setFavoriteOffers, (state, action) => {
       state.favoriteOffers = action.payload;
+    })
+    // ❔ Не слишком много кода для reducer?
+    .addCase(toggleFavoriteStatus, (state, action) => {
+      const id = action.payload;
+      const offer = findOffer(state.shortOffers, id);
+
+      if (offer === undefined) {
+        return;
+      }
+
+      offer.isFavorite = !offer.isFavorite;
+
+      if (offer.isFavorite) {
+        state.favoriteOffers = state.favoriteOffers.filter((favorite) => favorite.id !== id);
+      } else {
+        state.favoriteOffers.push(offer);
+      }
     })
     .addCase(setOffer, (state, action) => {
       state.fullOffer = action.payload;
