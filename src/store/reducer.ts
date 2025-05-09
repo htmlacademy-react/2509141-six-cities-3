@@ -53,13 +53,11 @@ const reducer = createReducer(initialState, (builder) => {
         return;
       }
 
-      offer.isFavorite = !offer.isFavorite;
+      state.favoriteOffers = offer.isFavorite
+        ? state.favoriteOffers.filter((favorite) => favorite.id !== id)
+        : [...state.favoriteOffers, offer];
 
-      if (offer.isFavorite) {
-        state.favoriteOffers = state.favoriteOffers.filter((favorite) => favorite.id !== id);
-      } else {
-        state.favoriteOffers.push(offer);
-      }
+      offer.isFavorite = !offer.isFavorite;
     })
     .addCase(setOffer, (state, action) => {
       state.fullOffer = action.payload;
