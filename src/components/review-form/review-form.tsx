@@ -30,11 +30,10 @@ function ReviewForm() {
     evt.preventDefault();
 
     const review: BaseReviewInfo = { comment: text, rating };
-    dispatch(addReviewAction(review))
-      .then(() => {
-        setText('');
-        evt.currentTarget.reset();
-      });
+    dispatch(addReviewAction(review)); // ❔ Как здесь получить результат addReviewAction?
+
+    setText('');
+    evt.currentTarget.reset();
   };
 
 

@@ -11,8 +11,8 @@ import NotFound from 'pages/not-found/not-found';
 import Map from 'components/map/map';
 import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { AppRoute, MapSource } from 'const';
+import { Link, useParams } from 'react-router-dom';
+import { MapSource } from 'const';
 import { setOffer, setError } from 'store/action';
 import { getPercentRating, upFirstLetter } from 'utils/util';
 import { useEffect } from 'react';
@@ -45,10 +45,6 @@ function Offer() {
 
   if (error?.status === 404) {
     return <NotFound />;
-  }
-
-  if (error) {
-    return <Navigate to={AppRoute.Root} />;
   }
 
   if (isLoading) {
