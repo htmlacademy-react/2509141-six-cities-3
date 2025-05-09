@@ -2,7 +2,7 @@ import Star from 'components/star/star';
 import { FormEvent, ChangeEvent, useState } from 'react';
 import { AuthorizationStatus, RatingTitles } from 'const';
 import { useAppSelector } from 'hooks';
-import { isDisabled } from './utils';
+import { isValid } from './utils';
 
 
 function ReviewForm() {
@@ -32,12 +32,12 @@ function ReviewForm() {
         <div className="reviews__rating-form form__rating" onChange={handleInputChange}>
           {RatingTitles.map((title) => <Star title={title} key={title.value} />)}
         </div>
-        <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={text} onInput={handleTextareaInput}></textarea>
+        <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={text} minLength={50} maxLength={300} onInput={handleTextareaInput}></textarea>
         <div className="reviews__button-wrapper">
           <p className="reviews__help">
             To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
           </p>
-          <button className="reviews__submit form__submit button" type="submit" disabled={isDisabled(text, rating)}>Submit</button>
+          <button className="reviews__submit form__submit button" type="submit" disabled={!isValid(text, rating)}>Submit</button>
         </div>
       </form>
     );
