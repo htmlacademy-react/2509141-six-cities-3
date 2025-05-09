@@ -15,7 +15,9 @@ function Main() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const cityParam = searchParams.get('city') ?? DEFAULT_CITY;
+
   const activeCity = CityName[cityParam as keyof typeof CityName];
+
   const offers = useAppSelector((state) => state.shortOffers);
 
 
@@ -25,24 +27,20 @@ function Main() {
 
   const [placesCount, setPlacesCount] = useState(activeOffers.length);
 
-  // ❔ Насколько правильно устанавливать первоначальный query-параметр в useEffect?
+
   useEffect(() => {
-    setSearchParams({ city: DEFAULT_CITY });
-  }, []); // ❔ eslint требует убрать массив или добавить в него setSearchParams. Оба варианта не работают.
-
-
-  const handleListItemHover = (offer: ShortOffer) => {
-    setSelectedOffer(offer);
-  };
-
-  const handleCityClick = (name: CityName) => {
-    setSearchParams({ city: name });
-
-    const foundOffers = findOffersInCity(offers, name);
+    const foundOffers = findOffersInCity(offers, activeCity);
     setActiveOffers(foundOffers);
 
     setPlacesCount(foundOffers.length);
-  };
+  }, [activeCity, offers]);
+
+
+  const handleListItemHover = (offer: ShortOffer) =>
+    setSelectedOffer(offer);
+
+  const handleCityClick = (name: CityName) =>
+    setSearchParams({ city: name });
 
 
   return (
