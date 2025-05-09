@@ -4,7 +4,7 @@ import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers,
 import { AppDispatch, ErrorInfo, State } from 'types/state.js';
 import { FullOffer, ShortOffers } from 'types/offer.js';
 import { APIRoute, AuthorizationStatus } from 'const';
-import { Reviews } from 'types/review.js';
+import { BaseReviewInfo, Reviews } from 'types/review.js';
 import { saveToken, dropToken } from 'services/token';
 import { AuthData } from 'types/auth-data';
 import { UserData } from 'types/user-data';
@@ -139,6 +139,34 @@ export const fetchReviewsAction = createAsyncThunk<void, string, {
   async (id, { dispatch, extra: api }) => {
     await api.get<Reviews>(`${APIRoute.Reviews}/${id}`)
       .then((response) => dispatch(setReviews(response.data)))
+      .catch(({ code, message, response }: AxiosError) => {
+        const error: ErrorInfo = {
+          code: code,
+          message: message,
+          status: response?.status
+        };
+
+        dispatch(setError(error));
+      });
+  }
+);
+
+
+export const addReviewAction = createAsyncThunk<void, BaseReviewInfo, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/addReview',
+  async (review, { dispatch, getState, extra: api }) => {
+    const id = getState().fullOffer?.id;
+
+    if (!id) {
+      return;
+    }
+
+    await api.post<BaseReviewInfo>(`${APIRoute.Reviews}/${id}`, review)
+      .then(() => dispatch(fetchReviewsAction(id)))
       .catch(({ code, message, response }: AxiosError) => {
         const error: ErrorInfo = {
           code: code,

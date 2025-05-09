@@ -1,8 +1,10 @@
 import Star from 'components/star/star';
 import { FormEvent, ChangeEvent, useState } from 'react';
 import { AuthorizationStatus, RatingTitles } from 'const';
-import { useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import { isValid } from './utils';
+import { BaseReviewInfo } from 'types/review';
+import { addReviewAction } from 'store/api-actions';
 
 
 function ReviewForm() {
@@ -22,12 +24,25 @@ function ReviewForm() {
     setRating(value);
   };
 
+  const dispatch = useAppDispatch();
+
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    const review: BaseReviewInfo = { comment: text, rating };
+    dispatch(addReviewAction(review))
+      .then(() => {
+        setText('');
+        evt.currentTarget.reset();
+      });
+  };
+
 
   const auth = useAppSelector((state) => state.authorizationStatus);
   return (auth !== AuthorizationStatus.Auth)
     ? null
     : (
-      <form className="reviews__form form" action="#" method="post">
+      <form className="reviews__form form" onSubmit={handleFormSubmit}>
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
         <div className="reviews__rating-form form__rating" onChange={handleInputChange}>
           {RatingTitles.map((title) => <Star title={title} key={title.value} />)}
