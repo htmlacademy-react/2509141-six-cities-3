@@ -179,8 +179,12 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   async ({ login: email, password }, { dispatch, extra: api }) => {
     const { data: { token } } = await api.post<UserData>(APIRoute.Login, { email, password });
     saveToken(token);
+
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(setEmail(email));
+
+    dispatch(fetchOffersAction());
+    dispatch(fetchFavoritesAction());
   },
 );
 
@@ -194,7 +198,11 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, { dispatch, extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(setEmail(undefined));
+
+    dispatch(fetchOffersAction());
+    dispatch(setFavoriteOffers([]));
   },
 );
