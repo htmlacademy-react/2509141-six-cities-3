@@ -17,7 +17,7 @@ function FavoritesLocationsItems({offers, currentLocation}: FavoritesLocationsIt
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
           {/* ❔ Допустимо вручную устанавливать query-параметр, вне setSearchParams()? */}
-          <Link className="locations__item-link" to={`?city=${currentLocation}`}>
+          <Link className="locations__item-link" to={`/?city=${currentLocation}`}>
             <span>{currentLocation}</span>
           </Link>
         </div>
