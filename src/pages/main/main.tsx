@@ -13,26 +13,18 @@ import { findOffersInCity } from 'utils/util';
 // TODO: вынести header из Main, Favorites и Offer в компонент
 function Main() {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const cityParam = searchParams.get('city') ?? DEFAULT_CITY;
-
   const activeCity = CityName[cityParam as keyof typeof CityName];
 
   const offers = useAppSelector((state) => state.shortOffers);
-
-
-  const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
-
   const [activeOffers, setActiveOffers] = useState(findOffersInCity(offers, DEFAULT_CITY));
 
-  const [placesCount, setPlacesCount] = useState(activeOffers.length);
+  const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
 
 
   useEffect(() => {
     const foundOffers = findOffersInCity(offers, activeCity);
     setActiveOffers(foundOffers);
-
-    setPlacesCount(foundOffers.length);
   }, [activeCity, offers]);
 
 
@@ -65,7 +57,7 @@ function Main() {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesCount} places to stay in {activeCity}</b>
+              <b className="places__found">{activeOffers.length} places to stay in {activeCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
