@@ -2,26 +2,33 @@ import PlacesList from 'components/places-list/places-list';
 import HeaderNav from 'components/header-nav/header-nav';
 import CityList from 'components/city-list/city-list';
 import Map from 'components/map/map';
-import { useState } from 'react';
-import { CityName, DEFAULT_CITY, MapSource } from 'const';
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from 'hooks';
+import { CityName, DEFAULT_CITY, CityLocations, MapSource } from 'const';
 import { ShortOffer } from 'types/offer';
-import { CityLocations } from 'mocks/cities';
 import { findOffersInCity } from 'utils/util';
-import { selectCity } from 'store/action';
 
 
 // TODO: вынести header из Main, Favorites и Offer в компонент
 function Main() {
-  const dispatch = useAppDispatch();
-  const activeCity = useAppSelector((state) => state.city);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const cityParam = searchParams.get('city') ?? DEFAULT_CITY;
+  const activeCity = CityName[cityParam as keyof typeof CityName];
   const offers = useAppSelector((state) => state.shortOffers);
 
 
   const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
 
   const [activeOffers, setActiveOffers] = useState(findOffersInCity(offers, DEFAULT_CITY));
+
   const [placesCount, setPlacesCount] = useState(activeOffers.length);
+
+  // ❔ Насколько правильно устанавливать первоначальный query-параметр в useEffect?
+  useEffect(() => {
+    setSearchParams({ city: DEFAULT_CITY });
+  }, []); // ❔ eslint требует убрать массив или добавить в него setSearchParams. Оба варианта не работают.
 
 
   const handleListItemHover = (offer: ShortOffer) => {
@@ -29,12 +36,12 @@ function Main() {
   };
 
   const handleCityClick = (name: CityName) => {
+    setSearchParams({ city: name });
+
     const foundOffers = findOffersInCity(offers, name);
     setActiveOffers(foundOffers);
 
     setPlacesCount(foundOffers.length);
-
-    dispatch(selectCity({city: name}));
   };
 
 

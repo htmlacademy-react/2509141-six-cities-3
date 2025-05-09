@@ -7,7 +7,6 @@ type CityListProps = {
   onClick: (name: CityName) => void;
 }
 
-//TODO: ?city=Paris
 function CityList({activeCity, onClick}: CityListProps) {
   return (
     <div className="tabs">

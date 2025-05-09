@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setOffer, setOffers, selectCity, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus } from './action';
-import { CityName, DEFAULT_CITY, AuthorizationStatus } from 'const';
+import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus } from './action';
+import { AuthorizationStatus } from 'const';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { ErrorInfo } from 'types/state';
 import { Reviews } from 'types/review';
@@ -8,7 +8,6 @@ import { findOffer } from 'utils/util';
 
 
 type InitialState = {
-  city: CityName;
   shortOffers: ShortOffers;
   nearbyOffers: ShortOffers;
   fullOffer?: FullOffer;
@@ -21,7 +20,6 @@ type InitialState = {
 }
 
 const initialState: InitialState = {
-  city: DEFAULT_CITY,
   shortOffers: [],
   nearbyOffers: [],
   favoriteOffers: [],
@@ -34,11 +32,6 @@ const initialState: InitialState = {
 // TODO: Д17. Отсутствует «универсальный редьюсер». Редьюсеры разбиваются в соответствии с предметной областью и объединяются при помощи Combine Reducer
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(selectCity, (state, action) => {
-      const {city} = action.payload;
-
-      state.city = city;
-    })
     .addCase(setOffersLoadingStatus, (state, action) => {
       state.isOffersLoading = action.payload;
     })

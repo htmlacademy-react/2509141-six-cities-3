@@ -1,13 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
-import { AuthorizationStatus, CityName } from 'const';
+import { AuthorizationStatus } from 'const';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { Reviews } from 'types/review';
 import { ErrorInfo } from 'types/state';
 
 
-// ❔ Д19. Для именования типов действия (action type) применяется паттерн: домен/действие (something/action). Например: list/addFavorite, user/login и так далее
-export const selectCity = createAction<{city: CityName}>('offers/selectCity');
-
+// Д19. Для именования типов действия (action type) применяется паттерн: домен/действие (something/action).
+// Например: list/addFavorite, user/login и так далее
+// ❔ Как определить домен?
 export const setOffers = createAction<ShortOffers>('offers/setOffers');
 export const setFavoriteOffers = createAction<ShortOffers>('offers/setFavoriteOffers');
 export const toggleFavoriteStatus = createAction<string>('offers/toggleFavoriteStatus');
