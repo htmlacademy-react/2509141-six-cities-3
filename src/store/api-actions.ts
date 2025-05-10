@@ -1,9 +1,9 @@
 import { AxiosError, AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus } from './action';
+import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus, redirectToRoute } from './action';
 import { AppDispatch, ErrorInfo, State } from 'types/state.js';
 import { FullOffer, ShortOffers } from 'types/offer.js';
-import { APIRoute, AuthorizationStatus } from 'const';
+import { APIRoute, AppRoute, AuthorizationStatus } from 'const';
 import { BaseReviewInfo, Reviews } from 'types/review.js';
 import { saveToken, dropToken } from 'services/token';
 import { AuthData } from 'types/auth-data';
@@ -213,6 +213,8 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 
     dispatch(fetchOffersAction());
     dispatch(fetchFavoritesAction());
+
+    dispatch(redirectToRoute(AppRoute.Root));
   },
 );
 

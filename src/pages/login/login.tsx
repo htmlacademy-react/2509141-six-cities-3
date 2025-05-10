@@ -1,16 +1,14 @@
-import { AppRoute } from 'const';
-import { useAppDispatch } from 'hooks';
+import { Link } from 'react-router-dom';
 import { FormEvent, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'hooks';
 import { loginAction } from 'store/api-actions';
 
 
 function Login() {
+  const dispatch = useAppDispatch();
+
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -19,12 +17,10 @@ function Login() {
       dispatch(loginAction({
         login: loginRef.current.value,
         password: passwordRef.current.value
-      }))
-        // ❔ Зачем перенаправлять из Action с помощью history и middleware, если той же цели можно добиться и с помощью useNavigate?
-        // Кроме демонстрации самой возможности, в этом есть какой-то смысл?
-        .then(() => navigate(AppRoute.Root));
+      }));
     }
   };
+
 
   return (
     <div className="page page--gray page--login">
