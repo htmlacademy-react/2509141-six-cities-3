@@ -8,6 +8,9 @@ export const getPercentRating = (rating: number, maxRating: number = MAX_RATING)
 export const findOffersInCity = (allOffers: ShortOffers, activeCity: CityName) =>
   allOffers.filter((offer) => offer.city.name === activeCity);
 
-export const upFirstLetter = (string: string) =>
+export const findOffer = (allOffers: ShortOffers, id: string) =>
+  allOffers.find((offer) => offer.id === id);
+
+export const capitalizeFirstLetter = (string: string) =>
   string.replace(string[0], string[0].toUpperCase());
 

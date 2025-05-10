@@ -1,4 +1,4 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from 'const';
 import { useAppSelector } from 'hooks';
 import Main from 'pages/main/main';
@@ -8,6 +8,8 @@ import NotFound from 'pages/not-found/not-found';
 import Offer from 'pages/offer/offer';
 import PrivateRoute from 'components/private-route/private-route';
 import Loading from 'pages/loading/loading';
+import browserHistory from 'browser-history';
+import HistoryRouter from 'components/history-route/history-route';
 
 
 function App() {
@@ -19,7 +21,8 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    // TODO: HelmetProvider
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Root}
@@ -45,7 +48,7 @@ function App() {
           element={<NotFound />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

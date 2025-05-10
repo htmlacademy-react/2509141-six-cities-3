@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { logoutAction } from 'store/api-actions';
-import { useAppDispatch } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import { AppRoute } from 'const';
 
 
@@ -11,7 +11,11 @@ type SignOutProps = {
 function SignOut({ email }: SignOutProps) {
   const dispatch = useAppDispatch();
 
-  const handleClick = () => {
+  const favoriteCount = useAppSelector((state) => state.favoriteOffers.length);
+
+  const handleClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
+
     dispatch(logoutAction());
   };
 
@@ -22,7 +26,7 @@ function SignOut({ email }: SignOutProps) {
           <div className="header__avatar-wrapper user__avatar-wrapper">
           </div>
           <span className="header__user-name user__name">{email}</span>
-          <span className="header__favorite-count">3</span>
+          <span className="header__favorite-count">{favoriteCount}</span>
         </Link>
       </li>
       <li className="header__nav-item">

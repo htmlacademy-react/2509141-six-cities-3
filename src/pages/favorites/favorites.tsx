@@ -1,11 +1,12 @@
 import FavoritePlacesList from 'components/favorite-places-list/favorite-places-list';
+import FavoritesEmpty from 'components/favorites-empty/favorites-empty';
 import HeaderNav from 'components/header-nav/header-nav';
-import { useAppSelector } from 'hooks';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from 'hooks';
 
 
 function Favorites() {
-  const offers = useAppSelector((state) => state.shortOffers);
+  const offers = useAppSelector((state) => state.favoriteOffers);
 
   return(
     <div className="page">
@@ -22,14 +23,11 @@ function Favorites() {
         </div>
       </header>
 
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <FavoritePlacesList offers={offers} />
-          </section>
-        </div>
-      </main>
+      {
+        offers.length > 0
+          ? <FavoritePlacesList offers={offers} />
+          : <FavoritesEmpty />
+      }
       <footer className="footer container">
         <Link className="footer__logo-link" to='/'>
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>

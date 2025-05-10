@@ -11,10 +11,10 @@ import NotFound from 'pages/not-found/not-found';
 import Map from 'components/map/map';
 import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { AppRoute, MapSource } from 'const';
+import { Link, useParams } from 'react-router-dom';
+import { MapSource } from 'const';
 import { setOffer, setError } from 'store/action';
-import { getPercentRating, upFirstLetter } from 'utils/util';
+import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
 import { useEffect } from 'react';
 
 
@@ -45,10 +45,6 @@ function Offer() {
 
   if (error?.status === 404) {
     return <NotFound />;
-  }
-
-  if (error) {
-    return <Navigate to={AppRoute.Root} />;
   }
 
   if (isLoading) {
@@ -84,7 +80,7 @@ function Offer() {
                 <h1 className="offer__name">
                   {offer.title}
                 </h1>
-                <BookmarkButton isFavorite={offer.isFavorite} isCardMode={false} />
+                <BookmarkButton offerId={offer.id} isFavoriteInitially={offer.isFavorite} isCardMode={false} />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
@@ -95,7 +91,7 @@ function Offer() {
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {upFirstLetter(offer.type)}
+                  {capitalizeFirstLetter(offer.type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
                   {offer.bedrooms} {(offer.bedrooms > 1) ? 'Bedrooms' : 'Bedroom'}

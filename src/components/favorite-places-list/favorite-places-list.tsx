@@ -11,9 +11,16 @@ function FavoritePlacesList({offers}: FavoritePlacesListProps) {
   const uniqueCities = [...new Set(cities)];
 
   return (
-    <ul className="favorites__list">
-      {uniqueCities.map((city) => <FavoritesLocationsItems offers={offers} currentLocation={city} key={city} />)}
-    </ul>
+    <main className="page__main page__main--favorites">
+      <div className="page__favorites-container container">
+        <section className="favorites">
+          <h1 className="favorites__title">Saved listing</h1>
+          <ul className="favorites__list">
+            {uniqueCities.map((city) => <FavoritesLocationsItems offers={offers} currentLocation={city} key={city} />)}
+          </ul>
+        </section>
+      </div>
+    </main>
   );
 }
 

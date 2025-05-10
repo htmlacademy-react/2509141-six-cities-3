@@ -2,40 +2,37 @@ import PlacesList from 'components/places-list/places-list';
 import HeaderNav from 'components/header-nav/header-nav';
 import CityList from 'components/city-list/city-list';
 import Map from 'components/map/map';
-import { useState } from 'react';
-import { CityName, DEFAULT_CITY, MapSource } from 'const';
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from 'hooks';
+import { CityName, DEFAULT_CITY, CityLocations, MapSource } from 'const';
 import { ShortOffer } from 'types/offer';
-import { CityLocations } from 'mocks/cities';
 import { findOffersInCity } from 'utils/util';
-import { selectCity } from 'store/action';
 
 
 // TODO: вынести header из Main, Favorites и Offer в компонент
 function Main() {
-  const dispatch = useAppDispatch();
-  const activeCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.shortOffers);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const cityParam = searchParams.get('city') ?? DEFAULT_CITY;
+  const activeCity = CityName[cityParam as keyof typeof CityName];
 
+  const offers = useAppSelector((state) => state.shortOffers);
+  const [activeOffers, setActiveOffers] = useState(findOffersInCity(offers, DEFAULT_CITY));
 
   const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
 
-  const [activeOffers, setActiveOffers] = useState(findOffersInCity(offers, DEFAULT_CITY));
-  const [placesCount, setPlacesCount] = useState(activeOffers.length);
 
-
-  const handleListItemHover = (offer: ShortOffer) => {
-    setSelectedOffer(offer);
-  };
-
-  const handleCityClick = (name: CityName) => {
-    const foundOffers = findOffersInCity(offers, name);
+  useEffect(() => {
+    const foundOffers = findOffersInCity(offers, activeCity);
     setActiveOffers(foundOffers);
+  }, [activeCity, offers]);
 
-    setPlacesCount(foundOffers.length);
 
-    dispatch(selectCity({city: name}));
-  };
+  const handleListItemHover = (offer: ShortOffer) =>
+    setSelectedOffer(offer);
+
+  const handleCityClick = (name: CityName) =>
+    setSearchParams({ city: name });
 
 
   return (
@@ -60,7 +57,7 @@ function Main() {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesCount} places to stay in {activeCity}</b>
+              <b className="places__found">{activeOffers.length} places to stay in {activeCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>

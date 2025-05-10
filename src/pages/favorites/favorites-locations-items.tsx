@@ -1,4 +1,5 @@
 import PlaceCard from 'components/place-card/place-card';
+import { Link } from 'react-router-dom';
 import { CityName, PlaceCardSource } from 'const';
 import { ShortOffers } from 'types/offer';
 
@@ -15,9 +16,10 @@ function FavoritesLocationsItems({offers, currentLocation}: FavoritesLocationsIt
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
-          <a className="locations__item-link" href="#">
+          {/* ❔ Допустимо вручную устанавливать query-параметр, вне setSearchParams()? */}
+          <Link className="locations__item-link" to={`/?city=${currentLocation}`}>
             <span>{currentLocation}</span>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="favorites__places">
