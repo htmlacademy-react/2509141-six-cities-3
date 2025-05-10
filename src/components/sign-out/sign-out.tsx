@@ -13,7 +13,9 @@ function SignOut({ email }: SignOutProps) {
 
   const favoriteCount = useAppSelector((state) => state.favoriteOffers.length);
 
-  const handleClick = () => {
+  const handleClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+    evt.preventDefault();
+
     dispatch(logoutAction());
   };
 

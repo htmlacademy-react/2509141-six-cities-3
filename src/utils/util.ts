@@ -11,6 +11,6 @@ export const findOffersInCity = (allOffers: ShortOffers, activeCity: CityName) =
 export const findOffer = (allOffers: ShortOffers, id: string) =>
   allOffers.find((offer) => offer.id === id);
 
-export const upFirstLetter = (string: string) =>
+export const capitalizeFirstLetter = (string: string) =>
   string.replace(string[0], string[0].toUpperCase());
 

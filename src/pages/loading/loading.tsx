@@ -18,7 +18,7 @@ function Loading() {
     return function stop() {
       spinner.stop();
     };
-  }, [container]);
+  }, []);
 
 
   return (
