@@ -1,19 +1,14 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'hooks';
-import { addToFavoritesAction, removeFromFavoritesAction } from 'store/api-actions';
-import { AppRoute, AuthorizationStatus } from 'const';
+import { toggleFavoriteStatusAction } from 'store/api-actions';
+import { useAppDispatch } from 'hooks';
 
 
 type BookmarkButtonProps = {
   offerId: string;
-  isFavoriteInitially: boolean;
+  isFavorite: boolean;
   isCardMode: boolean;
 }
 
-function BookmarkButton({ offerId, isFavoriteInitially, isCardMode } : BookmarkButtonProps) {
-  const [isFavorite, setIsFavorite] = useState(isFavoriteInitially);
-
+function BookmarkButton({ offerId, isFavorite, isCardMode } : BookmarkButtonProps) {
   const title = isFavorite ? 'In' : 'To';
 
   const type = isCardMode ? 'place-card' : 'offer';
@@ -25,20 +20,9 @@ function BookmarkButton({ offerId, isFavoriteInitially, isCardMode } : BookmarkB
   const height = isCardMode ? 19 : 33;
 
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const auth = useAppSelector((state) => state.authorizationStatus);
-
   const handleBookmarkClick = () => {
-    if (auth !== AuthorizationStatus.Auth) {
-      navigate(AppRoute.Login);
-      return;
-    }
-
-    const action = isFavorite ? removeFromFavoritesAction(offerId) : addToFavoritesAction(offerId);
-
-    dispatch(action)
-      .then(() => setIsFavorite(!isFavorite));
+    dispatch(toggleFavoriteStatusAction({ id: offerId, isFavorite }));
   };
 
 

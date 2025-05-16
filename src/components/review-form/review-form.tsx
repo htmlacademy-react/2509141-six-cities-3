@@ -1,16 +1,36 @@
 import Star from 'components/star/star';
-import { FormEvent, ChangeEvent, useState } from 'react';
+import { FormEvent, ChangeEvent, useState, useRef, useEffect } from 'react';
+import { BaseReviewInfo, ReviewSendingStatus } from 'types/review';
 import { AuthorizationStatus, RatingTitles } from 'const';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { isValid } from './utils';
-import { BaseReviewInfo } from 'types/review';
 import { addReviewAction } from 'store/api-actions';
+import { setReviewStatus } from 'store/action';
+import { isValid } from './utils';
 
 
 function ReviewForm() {
+  const dispatch = useAppDispatch();
+
+  const reviewStatus = useAppSelector((state) => state.reviewStatus);
+
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
 
+  const form = useRef<HTMLFormElement | null>(null);
+
+  const formDisabled = reviewStatus === ReviewSendingStatus.sending;
+  const submitDisabled = formDisabled || !isValid(text, rating);
+
+
+  useEffect(() => {
+    if (reviewStatus === ReviewSendingStatus.sent) {
+      setText('');
+      setRating(0);
+      form.current?.reset();
+
+      dispatch(setReviewStatus(ReviewSendingStatus.none));
+    }
+  }, [reviewStatus, dispatch]);
 
   const handleTextareaInput = (evt: FormEvent<HTMLTextAreaElement>) => {
     const inputText = evt.currentTarget.value;
@@ -18,22 +38,19 @@ function ReviewForm() {
     setText(inputText);
   };
 
+  // ❔ Не работает, если выбрать ту же звезду сразу после отправки формы
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = +evt.target.value;
 
     setRating(value);
   };
 
-  const dispatch = useAppDispatch();
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     const review: BaseReviewInfo = { comment: text, rating };
-    dispatch(addReviewAction(review)); // ❔ Как здесь получить результат addReviewAction?
-
-    setText('');
-    evt.currentTarget.reset();
+    dispatch(addReviewAction(review));
   };
 
 
@@ -41,17 +58,26 @@ function ReviewForm() {
   return (auth !== AuthorizationStatus.Auth)
     ? null
     : (
-      <form className="reviews__form form" onSubmit={handleFormSubmit}>
+      <form className="reviews__form form" ref={form} onSubmit={handleFormSubmit}>
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
         <div className="reviews__rating-form form__rating" onChange={handleInputChange}>
-          {RatingTitles.map((title) => <Star title={title} key={title.value} />)}
+          {RatingTitles.map((title) => <Star disabled={formDisabled} title={title} key={title.value} />)}
         </div>
-        <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={text} minLength={50} maxLength={300} onInput={handleTextareaInput}></textarea>
+        <textarea
+          className="reviews__textarea form__textarea"
+          id="review" name="review"
+          placeholder="Tell how was your stay, what you like and what can be improved"
+          value={text}
+          minLength={50}
+          maxLength={300}
+          onInput={handleTextareaInput}
+          disabled={formDisabled}
+        />
         <div className="reviews__button-wrapper">
           <p className="reviews__help">
             To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
           </p>
-          <button className="reviews__submit form__submit button" type="submit" disabled={!isValid(text, rating)}>Submit</button>
+          <button className="reviews__submit form__submit button" type="submit" disabled={submitDisabled}>Submit</button>
         </div>
       </form>
     );

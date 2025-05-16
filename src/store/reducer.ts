@@ -1,10 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus } from './action';
+import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus, setReviewStatus } from './action';
 import { AuthorizationStatus } from 'const';
+import { findOffer } from 'utils/util';
+import { Reviews, ReviewSendingStatus } from 'types/review';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { ErrorInfo } from 'types/state';
-import { Reviews } from 'types/review';
-import { findOffer } from 'utils/util';
 
 
 type InitialState = {
@@ -12,6 +12,7 @@ type InitialState = {
   nearbyOffers: ShortOffers;
   fullOffer?: FullOffer;
   reviews: Reviews;
+  reviewStatus: ReviewSendingStatus;
   isOffersLoading: boolean;
   error?: ErrorInfo;
   authorizationStatus: AuthorizationStatus;
@@ -24,8 +25,9 @@ const initialState: InitialState = {
   nearbyOffers: [],
   favoriteOffers: [],
   reviews: [],
+  reviewStatus: ReviewSendingStatus.none,
   isOffersLoading: false,
-  authorizationStatus: AuthorizationStatus.Unknown,
+  authorizationStatus: AuthorizationStatus.Unknown
 };
 
 
@@ -44,7 +46,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setFavoriteOffers, (state, action) => {
       state.favoriteOffers = action.payload;
     })
-    // ❔ Не слишком много кода для reducer?
     .addCase(toggleFavoriteStatus, (state, action) => {
       const id = action.payload;
       const offer = findOffer(state.shortOffers, id);
@@ -67,6 +68,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(setReviewStatus, (state, action) => {
+      state.reviewStatus = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import { getToken } from './token';
 import { StatusCodes } from 'http-status-codes';
 

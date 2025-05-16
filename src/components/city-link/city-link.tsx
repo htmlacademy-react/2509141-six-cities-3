@@ -1,22 +1,22 @@
-import { AppRoute, CityName } from 'const';
 import { Link } from 'react-router-dom';
+import { AppRoute, CityName } from 'const';
 
 
 type CityLinkProps = {
   name: CityName;
   activeCity: CityName;
-  onClick: (name: CityName) => void;
 }
 
-function CityLink({name, activeCity, onClick}: CityLinkProps) {
-  const handleCityClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
-    evt.preventDefault();
-    onClick(name);
-  };
-
+function CityLink({ name, activeCity }: CityLinkProps) {
   return (
     <li className="locations__item">
-      <Link className={`locations__item-link tabs__item ${name === activeCity ? 'tabs__item--active' : ''}`} to={AppRoute.Root} onClick={handleCityClick}>
+      <Link
+        className={`locations__item-link tabs__item ${name === activeCity ? 'tabs__item--active' : ''}`}
+        to={{
+          pathname: AppRoute.Root,
+          search: `?city=${name}`
+        }}
+      >
         <span>{name}</span>
       </Link>
     </li>

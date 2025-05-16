@@ -12,7 +12,7 @@ import { findOffersInCity } from 'utils/util';
 
 // TODO: вынести header из Main, Favorites и Offer в компонент
 function Main() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const cityParam = searchParams.get('city') ?? DEFAULT_CITY;
   const activeCity = CityName[cityParam as keyof typeof CityName];
 
@@ -30,9 +30,6 @@ function Main() {
 
   const handleListItemHover = (offer: ShortOffer) =>
     setSelectedOffer(offer);
-
-  const handleCityClick = (name: CityName) =>
-    setSearchParams({ city: name });
 
 
   return (
@@ -52,7 +49,7 @@ function Main() {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <CityList activeCity={activeCity} onClick={handleCityClick} />
+        <CityList activeCity={activeCity} />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
