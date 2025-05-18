@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { AppRoute, AuthorizationStatus } from 'const';
+import { AppRoute, AuthorizationStatus, SortType } from 'const';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { Reviews, ReviewSendingStatus } from 'types/review';
 import { ErrorInfo } from 'types/state';
@@ -11,6 +11,7 @@ export const setNearbyOffers = createAction<ShortOffers>('offer/setNearbyOffers'
 export const setFavoriteOffers = createAction<ShortOffers>('offer/setFavoriteOffers');
 export const toggleFavoriteStatus = createAction<string>('offer/toggleFavoriteStatus');
 export const setOffersLoadingStatus = createAction<boolean>('offer/setLoadingStatus');
+export const setSortType = createAction<SortType>('offer/setSortType');
 
 
 export const setReviews = createAction<Reviews>('review/setReviews');

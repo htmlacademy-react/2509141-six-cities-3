@@ -101,3 +101,11 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout'
 }
+
+
+export enum SortType {
+  Popular = 'Popular',
+  ToHighPrice = 'Price: low to high',
+  ToLowPrice = 'Price: high to low',
+  Top = 'Top rated first'
+}

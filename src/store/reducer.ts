@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus, setReviewStatus } from './action';
-import { AuthorizationStatus } from 'const';
+import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus, setReviewStatus, setSortType } from './action';
+import { SortToHighPrice, SortToLowPrice, SortToTop } from 'utils/sort';
 import { findOffer } from 'utils/util';
+import { AuthorizationStatus, SortType } from 'const';
 import { Reviews, ReviewSendingStatus } from 'types/review';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { ErrorInfo } from 'types/state';
@@ -9,6 +10,8 @@ import { ErrorInfo } from 'types/state';
 
 type InitialState = {
   shortOffers: ShortOffers;
+  sortedOffers: ShortOffers;
+  sortType: SortType;
   nearbyOffers: ShortOffers;
   fullOffer?: FullOffer;
   reviews: Reviews;
@@ -22,6 +25,8 @@ type InitialState = {
 
 const initialState: InitialState = {
   shortOffers: [],
+  sortedOffers: [],
+  sortType: SortType.Popular,
   nearbyOffers: [],
   favoriteOffers: [],
   reviews: [],
@@ -38,7 +43,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.isOffersLoading = action.payload;
     })
     .addCase(setOffers, (state, action) => {
-      state.shortOffers = action.payload;
+      state.shortOffers = state.sortedOffers = action.payload;
     })
     .addCase(setNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
@@ -77,6 +82,30 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setEmail, (state, action) => {
       state.email = action.payload;
+    })
+    .addCase(setSortType, (state, action) => {
+      const sortType = action.payload;
+
+      if (sortType === state.sortType) {
+        return;
+      }
+
+      state.sortType = sortType;
+
+      switch (sortType) {
+        case SortType.Top:
+          state.sortedOffers.sort(SortToTop);
+          break;
+        case SortType.ToHighPrice:
+          state.sortedOffers.sort(SortToHighPrice);
+          break;
+        case SortType.ToLowPrice:
+          state.sortedOffers.sort(SortToLowPrice);
+          break;
+        default:
+          state.sortedOffers = state.shortOffers;
+          break;
+      }
     });
 });
 
