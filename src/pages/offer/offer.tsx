@@ -80,7 +80,7 @@ function Offer() {
                 <h1 className="offer__name">
                   {offer.title}
                 </h1>
-                <BookmarkButton offerId={offer.id} isFavoriteInitially={offer.isFavorite} isCardMode={false} />
+                <BookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode={false} />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
