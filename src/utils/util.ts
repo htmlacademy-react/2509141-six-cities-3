@@ -14,3 +14,10 @@ export const findOffer = (allOffers: ShortOffers, id: string) =>
 export const capitalizeFirstLetter = (string: string) =>
   string.replace(string[0], string[0].toUpperCase());
 
+
+export const getKeyByValue = <T extends Record<string, unknown>>(value: unknown, enumObj: T) => {
+  const keys = (Object.keys(enumObj) as Array<keyof T>);
+  const key = keys.find((k) => enumObj[k] === value);
+
+  return key ? enumObj[key] : undefined;
+};

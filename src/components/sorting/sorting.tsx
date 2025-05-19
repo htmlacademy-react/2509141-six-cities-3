@@ -1,7 +1,9 @@
-import { FormEvent, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'hooks';
-import { setSortType } from 'store/action';
+import { useState } from 'react';
 import { SortType } from 'const';
+import { setSortType } from 'store/action';
+import { getKeyByValue } from 'utils/util';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import SortTypeElement from './sort-type-element';
 
 
 function Sorting() {
@@ -12,37 +14,29 @@ function Sorting() {
   const openedClass = opened ? 'places__options--opened' : '';
 
 
-  const handleListClick = (evt: FormEvent<HTMLFormElement>) => {
+  const handleListChange = (value: string) => {
     setOpened(!opened);
 
-    const target = evt.target as HTMLElement;
-    const text = target.textContent ?? '';
-
-    const index = Object.values<string>(SortType).findIndex((val) => val === text);
-    if (index === -1) {
-      return;
-    }
-
-    const type = SortType[Object.keys(SortType)[index] as keyof typeof SortType];
-
-
+    const type = getKeyByValue(value, SortType) ?? SortType.Popular;
     dispatch(setSortType(type));
   };
 
+  const handleListClick = () =>
+    setOpened(!opened);
+
+
   return (
-    <form className="places__sorting" action="#" method="get" onClick={handleListClick}>
+    <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by </span>
-      <span className="places__sorting-type" tabIndex={0}>
+      <span className="places__sorting-type" tabIndex={0} onClick={handleListClick}>
         {sortType}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
       <ul className={`places__options places__options--custom ${openedClass}`}>
-        <li className="places__option places__option--active" tabIndex={0}>{SortType.Popular}</li>
-        <li className="places__option" tabIndex={0}>{SortType.ToHighPrice}</li>
-        <li className="places__option" tabIndex={0}>{SortType.ToLowPrice}</li>
-        <li className="places__option" tabIndex={0}>{SortType.Top}</li>
+        {/* ❔ Передать sortType в props лучше чем вызывать useAppSelector в каждом из <SortTypeElement>? */}
+        {Object.values(SortType).map((type) => <SortTypeElement value={type} selectedType={sortType} key={type} onClick={handleListChange} />)}
       </ul>
     </form>
   );
