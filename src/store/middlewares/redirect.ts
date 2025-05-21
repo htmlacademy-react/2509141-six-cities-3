@@ -1,17 +1,17 @@
 import browserHistory from 'browser-history';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { Middleware } from 'redux';
-import { reducer } from 'store/reducer';
+import { rootReducer } from 'store/root-reducer';
 
 
-type Reducer = ReturnType<typeof reducer>;
+type Reducer = ReturnType<typeof rootReducer>;
 
 
 export const redirect: Middleware<unknown, Reducer> =
   () =>
     (next) =>
       (action: PayloadAction<string>) => {
-        if (action.type === 'navigation/redirectToRoute') {
+        if (action.type === 'app/redirectToRoute') {
           browserHistory.push(action.payload);
         }
 

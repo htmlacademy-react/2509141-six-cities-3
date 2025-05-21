@@ -3,15 +3,17 @@ import { FormEvent, ChangeEvent, useState, useRef, useEffect } from 'react';
 import { BaseReviewInfo, ReviewSendingStatus } from 'types/review';
 import { AuthorizationStatus, RatingTitles } from 'const';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { setReviewStatus } from 'store/slices/offer-slice/offer-slice';
+import { getReviewStatus } from 'store/slices/offer-slice/selectors';
 import { addReviewAction } from 'store/api-actions';
-import { setReviewStatus } from 'store/action';
 import { isValid } from './utils';
+import { getAuthStatus } from 'store/slices/user-slice/selectors';
 
 
 function ReviewForm() {
   const dispatch = useAppDispatch();
 
-  const reviewStatus = useAppSelector((state) => state.reviewStatus);
+  const reviewStatus = useAppSelector(getReviewStatus);
 
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
@@ -54,7 +56,7 @@ function ReviewForm() {
   };
 
 
-  const auth = useAppSelector((state) => state.authorizationStatus);
+  const auth = useAppSelector(getAuthStatus);
   return (auth !== AuthorizationStatus.Auth)
     ? null
     : (

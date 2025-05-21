@@ -1,3 +1,11 @@
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { getErrorStatus, getNearbyOffers, getOffer, getReviews } from 'store/slices/offer-slice/selectors';
+import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
+import { setOffer } from 'store/slices/offer-slice/offer-slice';
+import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import { MapSource } from 'const';
 import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import Loading from 'pages/loading/loading';
 import PremiumMark from 'components/premium-mark/premium-mark';
@@ -9,13 +17,6 @@ import GoodsItem from 'components/goods-item/goods-item';
 import HeaderNav from 'components/header-nav/header-nav';
 import NotFound from 'pages/not-found/not-found';
 import Map from 'components/map/map';
-import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
-import { useAppDispatch, useAppSelector } from 'hooks';
-import { Link, useParams } from 'react-router-dom';
-import { MapSource } from 'const';
-import { setOffer, setError } from 'store/action';
-import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
-import { useEffect } from 'react';
 
 
 function Offer() {
@@ -23,13 +24,13 @@ function Offer() {
   const id = params.id as string;
 
   const dispatch = useAppDispatch();
-  const offer = useAppSelector((state) => state.fullOffer);
-  const error = useAppSelector((state) => state.error);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const reviews = useAppSelector((state) => state.reviews);
+  const offer = useAppSelector(getOffer);
+  const hasError = useAppSelector(getErrorStatus);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const reviews = useAppSelector(getReviews);
+
 
   const isLoading = (offer === undefined);
-
 
   useEffect(() => {
     dispatch(fetchOfferAction(id));
@@ -38,12 +39,11 @@ function Offer() {
 
     return () => {
       dispatch(setOffer(undefined));
-      dispatch(setError(undefined));
     };
   }, [dispatch, id]);
 
 
-  if (error?.status === 404) {
+  if (hasError) {
     return <NotFound />;
   }
 

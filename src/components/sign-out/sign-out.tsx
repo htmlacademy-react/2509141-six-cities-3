@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { logoutAction } from 'store/api-actions';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { getFavoriteCount } from 'store/slices/offer-slice/selectors';
+import { logoutAction } from 'store/api-actions';
 import { AppRoute } from 'const';
 
 
@@ -11,7 +12,7 @@ type SignOutProps = {
 function SignOut({ email }: SignOutProps) {
   const dispatch = useAppDispatch();
 
-  const favoriteCount = useAppSelector((state) => state.favoriteOffers.length);
+  const favoriteCount = useAppSelector(getFavoriteCount);
 
   const handleClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();

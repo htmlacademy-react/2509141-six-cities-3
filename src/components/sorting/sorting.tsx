@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { SortType } from 'const';
-import { setSortType } from 'store/action';
+import { setSortType } from 'store/slices/offer-slice/offer-slice';
 import { getKeyByValue } from 'utils/util';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { getSortType } from 'store/slices/offer-slice/selectors';
 import SortTypeElement from './sort-type-element';
 
 
 function Sorting() {
   const dispatch = useAppDispatch();
-  const sortType = useAppSelector((state) => state.sortType);
+  const sortType = useAppSelector(getSortType);
 
   const [opened, setOpened] = useState(false);
   const openedClass = opened ? 'places__options--opened' : '';

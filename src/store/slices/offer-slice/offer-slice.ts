@@ -1,0 +1,116 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { fetchOfferAction, fetchOffersAction } from 'store/api-actions';
+import { Reviews, ReviewSendingStatus } from 'types/review';
+import { FullOffer, ShortOffers } from 'types/offer';
+import { OfferSlice } from 'types/state';
+import { findOffer } from 'utils/util';
+import { SortToTop, SortToHighPrice, SortToLowPrice } from 'utils/sort';
+import { NameSpace, SortType } from 'const';
+
+
+const initialState: OfferSlice = {
+  shortOffers: [],
+  sortedOffers: [],
+  sortType: SortType.Popular,
+  nearbyOffers: [],
+  favoriteOffers: [],
+  reviews: [],
+  reviewStatus: ReviewSendingStatus.none,
+  isOffersLoading: false,
+  hasError: false
+};
+
+export const offerSlice = createSlice({
+  name: NameSpace.User,
+  initialState,
+  reducers: {
+    setOffers: (state, action: PayloadAction<ShortOffers>) => {
+      state.shortOffers = state.sortedOffers = action.payload;
+    },
+    setOffersLoadingStatus: (state, action: PayloadAction<boolean>) => {
+      state.isOffersLoading = action.payload;
+    },
+    setNearbyOffers: (state, action: PayloadAction<ShortOffers>) => {
+      state.nearbyOffers = action.payload;
+    },
+    setFavoriteOffers: (state, action: PayloadAction<ShortOffers>) => {
+      state.favoriteOffers = action.payload;
+    },
+    toggleFavoriteStatus: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      const offer = findOffer(state.shortOffers, id);
+
+      if (offer === undefined) {
+        return;
+      }
+
+      state.favoriteOffers = offer.isFavorite
+        ? state.favoriteOffers.filter((favorite) => favorite.id !== id)
+        : [...state.favoriteOffers, offer];
+
+      offer.isFavorite = !offer.isFavorite;
+    },
+    setOffer: (state, action: PayloadAction<FullOffer | undefined>) => {
+      state.fullOffer = action.payload;
+    },
+    setReviews: (state, action: PayloadAction<Reviews>) => {
+      state.reviews = action.payload;
+    },
+    setReviewStatus: (state, action: PayloadAction<ReviewSendingStatus>) => {
+      state.reviewStatus = action.payload;
+    },
+    setSortType: (state, action: PayloadAction<SortType>) => {
+      const sortType = action.payload;
+
+      if (sortType === state.sortType) {
+        return;
+      }
+
+      state.sortType = sortType;
+
+      switch (sortType) {
+        case SortType.Top:
+          state.sortedOffers.sort(SortToTop);
+          break;
+        case SortType.ToHighPrice:
+          state.sortedOffers.sort(SortToHighPrice);
+          break;
+        case SortType.ToLowPrice:
+          state.sortedOffers.sort(SortToLowPrice);
+          break;
+        default:
+          state.sortedOffers = state.shortOffers;
+          break;
+      }
+    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchOffersAction.pending, (state) => {
+        state.isOffersLoading = true;
+        state.hasError = false;
+      })
+      .addCase(fetchOffersAction.fulfilled, (state, action) => {
+        state.shortOffers = state.sortedOffers = action.payload;
+        state.isOffersLoading = false;
+      })
+      .addCase(fetchOffersAction.rejected, (state) => {
+        state.isOffersLoading = false;
+        state.hasError = true;
+      })
+      .addCase(fetchOfferAction.pending, (state) => {
+        state.isOffersLoading = true;
+        state.hasError = false;
+      })
+      .addCase(fetchOfferAction.fulfilled, (state, action) => {
+        state.fullOffer = action.payload;
+        state.isOffersLoading = false;
+      })
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.isOffersLoading = false;
+        state.hasError = true;
+      });
+  }
+});
+
+export const { setOffers, setOffersLoadingStatus, setNearbyOffers, setFavoriteOffers, toggleFavoriteStatus, setOffer, setReviews, setReviewStatus, setSortType } = offerSlice.actions;

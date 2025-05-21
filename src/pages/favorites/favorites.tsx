@@ -1,12 +1,13 @@
+import { Link } from 'react-router-dom';
+import { useAppSelector } from 'hooks';
+import { getFavoriteOffers } from 'store/slices/offer-slice/selectors';
 import FavoritePlacesList from 'components/favorite-places-list/favorite-places-list';
 import FavoritesEmpty from 'components/favorites-empty/favorites-empty';
 import HeaderNav from 'components/header-nav/header-nav';
-import { Link } from 'react-router-dom';
-import { useAppSelector } from 'hooks';
 
 
 function Favorites() {
-  const offers = useAppSelector((state) => state.favoriteOffers);
+  const offers = useAppSelector(getFavoriteOffers);
 
   return(
     <div className="page">

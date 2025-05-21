@@ -1,25 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from 'const';
-import { useAppSelector } from 'hooks';
 import Main from 'pages/main/main';
 import Login from 'pages/login/login';
 import Favorites from 'pages/favorites/favorites';
 import NotFound from 'pages/not-found/not-found';
 import Offer from 'pages/offer/offer';
 import PrivateRoute from 'components/private-route/private-route';
-import Loading from 'pages/loading/loading';
 import browserHistory from 'browser-history';
 import HistoryRouter from 'components/history-route/history-route';
 
 
 function App() {
-  const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
-  if (isOffersLoading) {
-    return (
-      <Loading />
-    );
-  }
-
   return (
     // TODO: HelmetProvider
     <HistoryRouter history={browserHistory}>
