@@ -32,7 +32,7 @@ export const offerSlice = createSlice({
     },
     toggleFavoriteStatus: (state, action: PayloadAction<string>) => {
       const id = action.payload;
-      const offer = findOffer(state.shortOffers, id);
+      const offer = findOffer(state.sortedOffers, id);
 
       if (offer === undefined) {
         return;
