@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchOfferAction, fetchOffersAction } from 'store/api-actions';
-import { Reviews, ReviewSendingStatus } from 'types/review';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { OfferSlice } from 'types/state';
 import { findOffer } from 'utils/util';
@@ -14,8 +13,6 @@ const initialState: OfferSlice = {
   sortType: SortType.Popular,
   nearbyOffers: [],
   favoriteOffers: [],
-  reviews: [],
-  reviewStatus: ReviewSendingStatus.none,
   isOffersLoading: false,
   hasError: false
 };
@@ -26,9 +23,6 @@ export const offerSlice = createSlice({
   reducers: {
     setOffers: (state, action: PayloadAction<ShortOffers>) => {
       state.shortOffers = state.sortedOffers = action.payload;
-    },
-    setOffersLoadingStatus: (state, action: PayloadAction<boolean>) => {
-      state.isOffersLoading = action.payload;
     },
     setNearbyOffers: (state, action: PayloadAction<ShortOffers>) => {
       state.nearbyOffers = action.payload;
@@ -52,12 +46,6 @@ export const offerSlice = createSlice({
     },
     setOffer: (state, action: PayloadAction<FullOffer | undefined>) => {
       state.fullOffer = action.payload;
-    },
-    setReviews: (state, action: PayloadAction<Reviews>) => {
-      state.reviews = action.payload;
-    },
-    setReviewStatus: (state, action: PayloadAction<ReviewSendingStatus>) => {
-      state.reviewStatus = action.payload;
     },
     setSortType: (state, action: PayloadAction<SortType>) => {
       const sortType = action.payload;
@@ -113,4 +101,4 @@ export const offerSlice = createSlice({
   }
 });
 
-export const { setOffers, setOffersLoadingStatus, setNearbyOffers, setFavoriteOffers, toggleFavoriteStatus, setOffer, setReviews, setReviewStatus, setSortType } = offerSlice.actions;
+export const { setOffers, setNearbyOffers, setFavoriteOffers, toggleFavoriteStatus, setOffer, setSortType } = offerSlice.actions;

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getErrorStatus, getNearbyOffers, getOffer, getReviews } from 'store/slices/offer-slice/selectors';
+import { getErrorStatus, getNearbyOffers, getOffer } from 'store/slices/offer-slice/selectors';
 import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
 import { setOffer } from 'store/slices/offer-slice/offer-slice';
 import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
@@ -10,7 +10,6 @@ import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import Loading from 'pages/loading/loading';
 import PremiumMark from 'components/premium-mark/premium-mark';
 import OfferImage from 'components/offer-image/offer-image';
-import ReviewForm from 'components/review-form/review-form';
 import ReviewList from 'components/review-list/review-list';
 import NearPlaces from 'components/near-places/near-places';
 import GoodsItem from 'components/goods-item/goods-item';
@@ -27,7 +26,6 @@ function Offer() {
   const offer = useAppSelector(getOffer);
   const hasError = useAppSelector(getErrorStatus);
   const nearbyOffers = useAppSelector(getNearbyOffers);
-  const reviews = useAppSelector(getReviews);
 
 
   const isLoading = (offer === undefined);
@@ -129,13 +127,7 @@ function Offer() {
                   </p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
-                </h2>
-                <ReviewList reviews={reviews}/>
-                <ReviewForm />
-              </section>
+              <ReviewList />
             </div>
           </div>
           <Map source={MapSource.Offer} location={offer.location} offers={nearbyOffers} selectedOffer={offer} />

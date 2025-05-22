@@ -1,7 +1,7 @@
-import { Reviews, ReviewSendingStatus } from './review';
+import { store } from 'store/index';
 import { AuthorizationStatus, SortType } from 'const';
 import { ShortOffers, FullOffer } from './offer';
-import { store } from 'store/index';
+import { Reviews } from './review';
 
 
 export type AppSlice = {
@@ -19,10 +19,14 @@ export type OfferSlice = {
   sortType: SortType;
   nearbyOffers: ShortOffers;
   fullOffer?: FullOffer;
-  reviews: Reviews;
-  reviewStatus: ReviewSendingStatus;
   isOffersLoading: boolean;
   favoriteOffers: ShortOffers;
+  hasError: boolean;
+};
+
+export type ReviewSlice = {
+  isSending: boolean;
+  reviews: Reviews;
   hasError: boolean;
 };
 

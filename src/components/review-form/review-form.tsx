@@ -1,38 +1,36 @@
-import Star from 'components/star/star';
 import { FormEvent, ChangeEvent, useState, useRef, useEffect } from 'react';
-import { BaseReviewInfo, ReviewSendingStatus } from 'types/review';
+import { getErrorStatus, getSendingStatus } from 'store/slices/review-slice/selectors';
+import { getAuthStatus } from 'store/slices/user-slice/selectors';
+import { addReviewAction } from 'store/api-actions';
+import { BaseReviewInfo } from 'types/review';
 import { AuthorizationStatus, RatingTitles } from 'const';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { setReviewStatus } from 'store/slices/offer-slice/offer-slice';
-import { getReviewStatus } from 'store/slices/offer-slice/selectors';
-import { addReviewAction } from 'store/api-actions';
 import { isValid } from './utils';
-import { getAuthStatus } from 'store/slices/user-slice/selectors';
+import Star from 'components/star/star';
 
 
 function ReviewForm() {
   const dispatch = useAppDispatch();
 
-  const reviewStatus = useAppSelector(getReviewStatus);
+  const isSending = useAppSelector(getSendingStatus);
+  const hasError = useAppSelector(getErrorStatus);
 
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
 
   const form = useRef<HTMLFormElement | null>(null);
 
-  const formDisabled = reviewStatus === ReviewSendingStatus.sending;
+  const formDisabled = isSending;
   const submitDisabled = formDisabled || !isValid(text, rating);
 
 
   useEffect(() => {
-    if (reviewStatus === ReviewSendingStatus.sent) {
+    if (!hasError) {
       setText('');
       setRating(0);
       form.current?.reset();
-
-      dispatch(setReviewStatus(ReviewSendingStatus.none));
     }
-  }, [reviewStatus, dispatch]);
+  }, [dispatch, isSending, hasError]);
 
   const handleTextareaInput = (evt: FormEvent<HTMLTextAreaElement>) => {
     const inputText = evt.currentTarget.value;
@@ -41,6 +39,7 @@ function ReviewForm() {
   };
 
   // ❔ Не работает, если выбрать ту же звезду сразу после отправки формы
+  // Разве form.current?.reset() не должен сбросить последний выбор?
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = +evt.target.value;
 

@@ -21,11 +21,3 @@ export type Review = BaseReviewInfo & {
   user: User;
 };
 export type Reviews = Review[];
-
-
-export enum ReviewSendingStatus {
-  none,
-  sending,
-  sent,
-  error
-}

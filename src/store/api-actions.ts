@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setNearbyOffers, setReviews, setFavoriteOffers, toggleFavoriteStatus, setReviewStatus } from 'store/slices/offer-slice/offer-slice';
-import { BaseReviewInfo, Reviews, ReviewSendingStatus } from 'types/review.js';
+import { setNearbyOffers, setFavoriteOffers, toggleFavoriteStatus } from 'store/slices/offer-slice/offer-slice';
+import { BaseReviewInfo, Reviews } from 'types/review.js';
 import { APIRoute, AppRoute, AuthorizationStatus, NameSpace } from 'const';
 import { FullOffer, ShortOffers } from 'types/offer.js';
 import { AppDispatch, State } from 'types/state.js';
@@ -84,15 +84,15 @@ export const fetchNearbyOffersAction = createAsyncThunk<void, string, {
 );
 
 
-export const fetchReviewsAction = createAsyncThunk<void, string, {
+export const fetchReviewsAction = createAsyncThunk<Reviews, string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchReviews',
-  async (id, { dispatch, extra: api }) => {
-    await api.get<Reviews>(`${APIRoute.Reviews}/${id}`)
-      .then((response) => dispatch(setReviews(response.data)));
+  'review/fetchReviews',
+  async (id, { extra: api }) => {
+    const { data } = await api.get<Reviews>(`${APIRoute.Reviews}/${id}`);
+    return data;
   }
 );
 
@@ -102,7 +102,7 @@ export const addReviewAction = createAsyncThunk<void, BaseReviewInfo, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/addReview',
+  'review/addReview',
   async (review, { dispatch, getState, extra: api }) => {
     const id = getState()[NameSpace.Offer].fullOffer?.id;
 
@@ -110,15 +110,10 @@ export const addReviewAction = createAsyncThunk<void, BaseReviewInfo, {
       return;
     }
 
-    dispatch(setReviewStatus(ReviewSendingStatus.sending));
-
     await api.post<BaseReviewInfo>(`${APIRoute.Reviews}/${id}`, review)
       .then(() => {
         dispatch(fetchReviewsAction(id));
-        dispatch(setReviewStatus(ReviewSendingStatus.sent));
-      })
-      .catch(() =>
-        dispatch(setReviewStatus(ReviewSendingStatus.error)));
+      });
   }
 );
 
