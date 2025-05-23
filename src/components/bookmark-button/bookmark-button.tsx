@@ -1,5 +1,6 @@
-import { toggleFavoriteStatusAction } from 'store/api-actions';
+import { memo } from 'react';
 import { useAppDispatch } from 'hooks';
+import { toggleFavoriteStatusAction } from 'store/api-actions';
 
 
 type BookmarkButtonProps = {
@@ -37,4 +38,4 @@ function BookmarkButton({ offerId, isFavorite, isCardMode } : BookmarkButtonProp
 }
 
 
-export default BookmarkButton;
+export const MemoBookmarkButton = memo(BookmarkButton);

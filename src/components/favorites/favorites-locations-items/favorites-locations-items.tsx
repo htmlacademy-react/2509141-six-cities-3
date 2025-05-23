@@ -1,7 +1,7 @@
-import PlaceCard from 'components/place-card/place-card';
 import { Link } from 'react-router-dom';
 import { AppRoute, CityName, PlaceCardSource } from 'const';
 import { ShortOffers } from 'types/offer';
+import PlaceCard from 'components/places-list/place-card/place-card';
 
 
 type FavoritesLocationsItemsProps = {

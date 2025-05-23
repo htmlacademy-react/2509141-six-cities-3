@@ -1,13 +1,13 @@
-import PlaceCard from 'components/place-card/place-card';
-import { MAX_NEAR_PLACES_COUNT, PlaceCardSource } from 'const';
 import { ShortOffers } from 'types/offer';
+import { MAX_NEAR_PLACES_COUNT, PlaceCardSource } from 'const';
+import PlaceCard from 'components/places-list/place-card/place-card';
 
 
 type NearPlacesProps = {
   offers: ShortOffers;
 }
 
-function NearPlaces({offers}: NearPlacesProps) {
+function NearPlaces({ offers }: NearPlacesProps) {
   return (
     <div className="container">
       <section className="near-places places">

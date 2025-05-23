@@ -1,9 +1,9 @@
-import BookmarkButton from 'components/bookmark-button/bookmark-button';
-import PremiumMark from 'components/premium-mark/premium-mark';
 import { Link } from 'react-router-dom';
 import { ShortOffer } from 'types/offer';
 import { AppRoute, PlaceCardSource } from 'const';
 import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
+import { MemoBookmarkButton } from 'components/bookmark-button/bookmark-button';
+import PremiumMark from './premium-mark/premium-mark';
 
 
 type PlaceCardProps = {
@@ -39,7 +39,7 @@ function PlaceCard({ offer, source, onListItemHover }: PlaceCardProps) {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <BookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode />
+          <MemoBookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

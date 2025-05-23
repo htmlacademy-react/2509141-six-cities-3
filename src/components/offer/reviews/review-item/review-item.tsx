@@ -7,7 +7,7 @@ type ReviewItemProps = {
   review: Review;
 }
 
-function ReviewItem({review}: ReviewItemProps) {
+function ReviewItem({ review }: ReviewItemProps) {
   const user = review.user;
   const date = dayjs(review.date);
   const backDate = date.format('YYYY-MM-DD');

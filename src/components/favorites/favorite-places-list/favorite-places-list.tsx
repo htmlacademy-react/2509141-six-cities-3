@@ -1,5 +1,5 @@
-import FavoritesLocationsItems from 'pages/favorites/favorites-locations-items';
 import { ShortOffers } from 'types/offer';
+import FavoritesLocationsItems from 'components/favorites/favorites-locations-items/favorites-locations-items';
 
 
 type FavoritePlacesListProps = {

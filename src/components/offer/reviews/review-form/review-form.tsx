@@ -1,12 +1,12 @@
-import { FormEvent, ChangeEvent, useState, useRef, useEffect } from 'react';
+import { FormEvent, ChangeEvent, useState, useRef, useEffect, useCallback, memo } from 'react';
 import { getErrorStatus, getSendingStatus } from 'store/slices/review-slice/selectors';
 import { getAuthStatus } from 'store/slices/user-slice/selectors';
 import { addReviewAction } from 'store/api-actions';
 import { BaseReviewInfo } from 'types/review';
-import { AuthorizationStatus, RatingTitles } from 'const';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { isValid } from './utils';
-import Star from 'components/star/star';
+import { AuthorizationStatus } from 'const';
+import { isValid } from './util';
+import { MemoStars } from './stars/stars';
 
 
 function ReviewForm() {
@@ -18,6 +18,7 @@ function ReviewForm() {
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
 
+  // ❔ Вызывает ререндер при вводе каждого символа. Хорошо ли это?
   const form = useRef<HTMLFormElement | null>(null);
 
   const formDisabled = isSending;
@@ -40,11 +41,14 @@ function ReviewForm() {
 
   // ❔ Не работает, если выбрать ту же звезду сразу после отправки формы
   // Разве form.current?.reset() не должен сбросить последний выбор?
-  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const value = +evt.target.value;
+  const handleInputChange = useCallback(
+    (evt: ChangeEvent<HTMLInputElement>) => {
+      const value = +evt.target.value;
 
-    setRating(value);
-  };
+      setRating(value);
+    },
+    []
+  );
 
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -61,9 +65,7 @@ function ReviewForm() {
     : (
       <form className="reviews__form form" ref={form} onSubmit={handleFormSubmit}>
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
-        <div className="reviews__rating-form form__rating" onChange={handleInputChange}>
-          {RatingTitles.map((title) => <Star disabled={formDisabled} title={title} key={title.value} />)}
-        </div>
+        <MemoStars formDisabled={formDisabled} onChange={handleInputChange} />
         <textarea
           className="reviews__textarea form__textarea"
           id="review" name="review"
@@ -85,4 +87,4 @@ function ReviewForm() {
 }
 
 
-export default ReviewForm;
+export const MemoReviewForm = memo(ReviewForm);

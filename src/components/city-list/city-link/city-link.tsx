@@ -4,14 +4,14 @@ import { AppRoute, CityName } from 'const';
 
 type CityLinkProps = {
   name: CityName;
-  activeCity: CityName;
+  isActive: boolean;
 }
 
-function CityLink({ name, activeCity }: CityLinkProps) {
+function CityLink({ name, isActive }: CityLinkProps) {
   return (
     <li className="locations__item">
       <Link
-        className={`locations__item-link tabs__item ${name === activeCity ? 'tabs__item--active' : ''}`}
+        className={`locations__item-link tabs__item ${isActive ? 'tabs__item--active' : ''}`}
         to={{
           pathname: AppRoute.Root,
           search: `?city=${name}`

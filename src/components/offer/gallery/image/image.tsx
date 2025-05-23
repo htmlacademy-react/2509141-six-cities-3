@@ -1,8 +1,8 @@
-type OfferImageProps = {
+type ImageProps = {
   image: string;
 }
 
-function OfferImage({image}: OfferImageProps) {
+function Image({ image }: ImageProps) {
   return (
     <div className="offer__image-wrapper">
       <img className="offer__image" src={image} alt="Photo studio"/>
@@ -11,4 +11,4 @@ function OfferImage({image}: OfferImageProps) {
 }
 
 
-export default OfferImage;
+export default Image;

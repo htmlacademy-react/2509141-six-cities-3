@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { SortType } from 'const';
 import { setSortType } from 'store/slices/offer-slice/offer-slice';
 import { getKeyByValue } from 'utils/util';
@@ -44,4 +44,4 @@ function Sorting() {
 }
 
 
-export default Sorting;
+export const MemoSorting = memo(Sorting);
