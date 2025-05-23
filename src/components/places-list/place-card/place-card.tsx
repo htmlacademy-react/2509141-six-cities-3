@@ -29,9 +29,12 @@ function PlaceCard({ offer, source, onListItemHover }: PlaceCardProps) {
     >
       <PremiumMark isPremium={offer.isPremium} isCardMode />
       <div className={`${source}__image-wrapper place-card__image-wrapper`}>
-        <a href="#">
+
+        {/* ТЗ: Клик по заголовку карточки выполняет переход на страницу с подробной информацией о предложении.
+            ❔ А что тогда должен делать клик по изображению? */}
+        <Link to={''}>
           <img className="place-card__image" src={offer.previewImage} width={width} height={height} alt="Place image"/>
-        </a>
+        </Link>
       </div>
       <div className={`${cardInfoClass} place-card__info`}>
         <div className="place-card__price-wrapper">
