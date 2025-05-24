@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from 'hooks';
 import { loginAction } from 'store/api-actions';
+import RandomCity from 'components/random-city/random-city';
 
 
 function Login() {
@@ -41,7 +42,7 @@ function Login() {
           <section className="login">
             <h1 className="login__title">Sign in</h1>
 
-            <form className="login__form form" action="#" method="post" onSubmit={handleSubmit}>
+            <form className="login__form form" onSubmit={handleSubmit}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input ref={loginRef} className="login__input form__input" type="email" name="email" placeholder="Email" required/>
@@ -54,13 +55,7 @@ function Login() {
             </form>
 
           </section>
-          <section className="locations locations--login locations--current">
-            <div className="locations__item">
-              <Link className="locations__item-link" to="/">
-                <span>Amsterdam</span>
-              </Link>
-            </div>
-          </section>
+          <RandomCity />
         </div>
       </main>
     </div>
