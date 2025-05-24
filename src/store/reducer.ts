@@ -1,17 +1,21 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus } from './action';
-import { AuthorizationStatus } from 'const';
+import { setOffer, setOffers, setError, setOffersLoadingStatus, setNearbyOffers, setReviews, requireAuthorization, setEmail, setFavoriteOffers, toggleFavoriteStatus, setReviewStatus, setSortType } from './action';
+import { SortToHighPrice, SortToLowPrice, SortToTop } from 'utils/sort';
+import { findOffer } from 'utils/util';
+import { AuthorizationStatus, SortType } from 'const';
+import { Reviews, ReviewSendingStatus } from 'types/review';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { ErrorInfo } from 'types/state';
-import { Reviews } from 'types/review';
-import { findOffer } from 'utils/util';
 
 
 type InitialState = {
   shortOffers: ShortOffers;
+  sortedOffers: ShortOffers;
+  sortType: SortType;
   nearbyOffers: ShortOffers;
   fullOffer?: FullOffer;
   reviews: Reviews;
+  reviewStatus: ReviewSendingStatus;
   isOffersLoading: boolean;
   error?: ErrorInfo;
   authorizationStatus: AuthorizationStatus;
@@ -21,11 +25,14 @@ type InitialState = {
 
 const initialState: InitialState = {
   shortOffers: [],
+  sortedOffers: [],
+  sortType: SortType.Popular,
   nearbyOffers: [],
   favoriteOffers: [],
   reviews: [],
+  reviewStatus: ReviewSendingStatus.none,
   isOffersLoading: false,
-  authorizationStatus: AuthorizationStatus.Unknown,
+  authorizationStatus: AuthorizationStatus.Unknown
 };
 
 
@@ -36,7 +43,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.isOffersLoading = action.payload;
     })
     .addCase(setOffers, (state, action) => {
-      state.shortOffers = action.payload;
+      state.shortOffers = state.sortedOffers = action.payload;
     })
     .addCase(setNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
@@ -44,7 +51,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setFavoriteOffers, (state, action) => {
       state.favoriteOffers = action.payload;
     })
-    // ❔ Не слишком много кода для reducer?
     .addCase(toggleFavoriteStatus, (state, action) => {
       const id = action.payload;
       const offer = findOffer(state.shortOffers, id);
@@ -68,11 +74,38 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setError, (state, action) => {
       state.error = action.payload;
     })
+    .addCase(setReviewStatus, (state, action) => {
+      state.reviewStatus = action.payload;
+    })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
     .addCase(setEmail, (state, action) => {
       state.email = action.payload;
+    })
+    .addCase(setSortType, (state, action) => {
+      const sortType = action.payload;
+
+      if (sortType === state.sortType) {
+        return;
+      }
+
+      state.sortType = sortType;
+
+      switch (sortType) {
+        case SortType.Top:
+          state.sortedOffers.sort(SortToTop);
+          break;
+        case SortType.ToHighPrice:
+          state.sortedOffers.sort(SortToHighPrice);
+          break;
+        case SortType.ToLowPrice:
+          state.sortedOffers.sort(SortToLowPrice);
+          break;
+        default:
+          state.sortedOffers = state.shortOffers;
+          break;
+      }
     });
 });
 
