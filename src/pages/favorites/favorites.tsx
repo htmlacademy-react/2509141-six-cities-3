@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { AppRoute } from 'const';
 import { useAppSelector } from 'hooks';
@@ -12,12 +13,18 @@ function Favorites() {
 
   return(
     <div className="page">
+      <Helmet>
+        <title>Saved listing</title>
+      </Helmet>
+
       <MemoHeaderNav />
+
       {
         offers.length > 0
           ? <FavoritePlacesList offers={offers} />
           : <FavoritesEmpty />
       }
+
       <footer className="footer container">
         <Link className="footer__logo-link" to={AppRoute.Root}>
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>

@@ -1,5 +1,6 @@
-import { useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getLoadingStatus, getOffers } from 'store/slices/offer-slice/selectors';
 import { CityName, DEFAULT_CITY } from 'const';
 import { findOffersInCity } from 'utils/util';
@@ -35,6 +36,10 @@ function Main() {
     ? <Loading />
     : (
       <div className="page page--gray page--main">
+        <Helmet>
+          <title>{city}</title>
+        </Helmet>
+
         <MemoHeaderNav />
 
         <main className={`page__main page__main--index ${emptyClass}`}>

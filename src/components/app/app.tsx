@@ -1,3 +1,4 @@
+import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from 'const';
 import Main from 'pages/main/main';
@@ -12,34 +13,35 @@ import HistoryRouter from 'components/history-route/history-route';
 
 function App() {
   return (
-    // TODO: HelmetProvider
-    <HistoryRouter history={browserHistory}>
-      <Routes>
-        <Route
-          path={AppRoute.Root}
-          element={<Main />}
-        />
-        <Route
-          path={AppRoute.Login}
-          element={<Login />}
-        />
-        <Route path={AppRoute.Offer}>
-          <Route path=':id' element={<Offer />} />
-        </Route>
-        <Route
-          path={AppRoute.Favorites}
-          element={
-            <PrivateRoute>
-              <Favorites />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path='*'
-          element={<NotFound />}
-        />
-      </Routes>
-    </HistoryRouter>
+    <HelmetProvider>
+      <HistoryRouter history={browserHistory}>
+        <Routes>
+          <Route
+            path={AppRoute.Root}
+            element={<Main />}
+          />
+          <Route
+            path={AppRoute.Login}
+            element={<Login />}
+          />
+          <Route path={AppRoute.Offer}>
+            <Route path=':id' element={<Offer />} />
+          </Route>
+          <Route
+            path={AppRoute.Favorites}
+            element={
+              <PrivateRoute>
+                <Favorites />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='*'
+            element={<NotFound />}
+          />
+        </Routes>
+      </HistoryRouter>
+    </HelmetProvider>
   );
 }
 
