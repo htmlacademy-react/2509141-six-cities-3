@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { getErrorStatus, getNearbyOffers, getOffer } from 'store/slices/offer-slice/selectors';
 import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
@@ -52,6 +53,10 @@ function Offer() {
 
   return (
     <div className="page">
+      <Helmet>
+        <title>{offer.title}</title>
+      </Helmet>
+
       <MemoHeaderNav />
 
       <main className="page__main page__main--offer">
