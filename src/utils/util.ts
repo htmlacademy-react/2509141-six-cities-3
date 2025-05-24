@@ -21,3 +21,10 @@ export const getKeyByValue = <T extends Record<string, unknown>>(value: unknown,
 
   return key ? enumObj[key] : undefined;
 };
+
+export const getRandomCityName = () => {
+  const cityNames = Object.keys(CityName) as Array<keyof typeof CityName>;
+  const randomIndex = Math.floor(Math.random() * cityNames.length);
+
+  return CityName[cityNames[randomIndex]];
+};

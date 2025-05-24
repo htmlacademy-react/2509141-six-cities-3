@@ -1,14 +1,15 @@
-import PlaceCard from 'components/place-card/place-card';
-import { ShortOffer, ShortOffers } from 'types/offer';
+import { memo } from 'react';
 import { PlaceCardSource } from 'const';
+import { ShortOffer, ShortOffers } from 'types/offer';
+import PlaceCard from './place-card/place-card';
 
 
 type PlacesListProps = {
-  offers: ShortOffers | undefined;
+  offers?: ShortOffers;
   onListItemHover: (offer: ShortOffer) => void;
 }
 
-function PlacesList({offers, onListItemHover}: PlacesListProps) {
+function PlacesList({ offers, onListItemHover }: PlacesListProps) {
   return (
     <div className="cities__places-list places__list tabs__content">
       {offers?.map((offer) => (
@@ -23,4 +24,4 @@ function PlacesList({offers, onListItemHover}: PlacesListProps) {
 }
 
 
-export default PlacesList;
+export const MemoPlacesList = memo(PlacesList);

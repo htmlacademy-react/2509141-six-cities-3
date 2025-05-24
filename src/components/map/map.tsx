@@ -1,8 +1,8 @@
-import {useRef, useEffect} from 'react';
-import {Icon, Marker, layerGroup} from 'leaflet';
+import { useRef, useEffect } from 'react';
+import { Icon, Marker, layerGroup } from 'leaflet';
+import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT, MapSource } from 'const';
+import { ShortOffers, Location, BaseOffer } from 'types/offer';
 import useMap from 'hooks/use-map';
-import {ShortOffers, Location, BaseOffer} from 'types/offer';
-import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT, MapSource} from 'const';
 import 'leaflet/dist/leaflet.css';
 
 
@@ -66,6 +66,5 @@ function Map({source, location, offers, selectedOffer}: MapProps) {
 
   return <section className={`${source}__map map`} ref={mapRef} />;
 }
-
 
 export default Map;

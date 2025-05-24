@@ -1,21 +1,21 @@
-import BookmarkButton from 'components/bookmark-button/bookmark-button';
-import Loading from 'pages/loading/loading';
-import PremiumMark from 'components/premium-mark/premium-mark';
-import OfferImage from 'components/offer-image/offer-image';
-import ReviewForm from 'components/review-form/review-form';
-import ReviewList from 'components/review-list/review-list';
-import NearPlaces from 'components/near-places/near-places';
-import GoodsItem from 'components/goods-item/goods-item';
-import HeaderNav from 'components/header-nav/header-nav';
-import NotFound from 'pages/not-found/not-found';
-import Map from 'components/map/map';
-import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
-import { useAppDispatch, useAppSelector } from 'hooks';
-import { Link, useParams } from 'react-router-dom';
-import { MapSource } from 'const';
-import { setOffer, setError } from 'store/action';
-import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getErrorStatus, getNearbyOffers, getOffer } from 'store/slices/offer-slice/selectors';
+import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 'store/api-actions';
+import { setOffer } from 'store/slices/offer-slice/offer-slice';
+import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import { MapSource } from 'const';
+import { MemoBookmarkButton } from 'components/bookmark-button/bookmark-button';
+import { MemoHeaderNav } from 'components/header-nav/header-nav';
+import Loading from 'pages/loading/loading';
+import NotFound from 'pages/not-found/not-found';
+import PremiumMark from 'components/places-list/place-card/premium-mark/premium-mark';
+import NearPlaces from 'components/offer/near-places/near-places';
+import Map from 'components/map/map';
+import Goods from 'components/offer/goods/goods';
+import Gallery from 'components/offer/gallery/gallery';
+import Reviews from 'components/offer/reviews/reviews';
 
 
 function Offer() {
@@ -23,27 +23,26 @@ function Offer() {
   const id = params.id as string;
 
   const dispatch = useAppDispatch();
-  const offer = useAppSelector((state) => state.fullOffer);
-  const error = useAppSelector((state) => state.error);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const reviews = useAppSelector((state) => state.reviews);
+  const offer = useAppSelector(getOffer);
+  const hasError = useAppSelector(getErrorStatus);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+
 
   const isLoading = (offer === undefined);
-
 
   useEffect(() => {
     dispatch(fetchOfferAction(id));
     dispatch(fetchNearbyOffersAction(id));
     dispatch(fetchReviewsAction(id));
 
+    // ❔ Это не нарушает Д16. (Логика изменения состояния описывается в редьюсере, а не в компоненте)?
     return () => {
       dispatch(setOffer(undefined));
-      dispatch(setError(undefined));
     };
   }, [dispatch, id]);
 
 
-  if (error?.status === 404) {
+  if (hasError) {
     return <NotFound />;
   }
 
@@ -53,26 +52,12 @@ function Offer() {
 
   return (
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link" to='/'>
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </Link>
-            </div>
-            <HeaderNav />
-          </div>
-        </div>
-      </header>
+      <MemoHeaderNav />
 
       <main className="page__main page__main--offer">
         <section className="offer">
-          <div className="offer__gallery-container container">
-            <div className="offer__gallery">
-              {offer.images.slice(0, 6).map((image) => <OfferImage image={image} key={image} />)}
-            </div>
-          </div>
+          <Gallery images={offer.images} />
+
           <div className="offer__container container">
             <div className="offer__wrapper">
               <PremiumMark isPremium={offer.isPremium} isCardMode={false} />
@@ -80,7 +65,7 @@ function Offer() {
                 <h1 className="offer__name">
                   {offer.title}
                 </h1>
-                <BookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode={false} />
+                <MemoBookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode={false} />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
@@ -104,12 +89,7 @@ function Offer() {
                 <b className="offer__price-value">&euro;{offer.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
-              <div className="offer__inside">
-                <h2 className="offer__inside-title">What&apos;s inside</h2>
-                <ul className="offer__inside-list">
-                  {offer.goods.map((item) => <GoodsItem item={item} key={item} />)}
-                </ul>
-              </div>
+              <Goods goods={offer.goods} />
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
@@ -129,13 +109,7 @@ function Offer() {
                   </p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
-                </h2>
-                <ReviewList reviews={reviews}/>
-                <ReviewForm />
-              </section>
+              <Reviews />
             </div>
           </div>
           <Map source={MapSource.Offer} location={offer.location} offers={nearbyOffers} selectedOffer={offer} />
