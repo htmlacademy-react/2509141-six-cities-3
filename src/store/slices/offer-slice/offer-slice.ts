@@ -21,9 +21,6 @@ export const offerSlice = createSlice({
   name: NameSpace.User,
   initialState,
   reducers: {
-    setOffers: (state, action: PayloadAction<ShortOffers>) => {
-      state.shortOffers = state.sortedOffers = action.payload;
-    },
     setNearbyOffers: (state, action: PayloadAction<ShortOffers>) => {
       state.nearbyOffers = action.payload;
     },
@@ -101,4 +98,4 @@ export const offerSlice = createSlice({
   }
 });
 
-export const { setOffers, setNearbyOffers, setFavoriteOffers, toggleFavoriteStatus, setOffer, setSortType } = offerSlice.actions;
+export const { setNearbyOffers, setFavoriteOffers, toggleFavoriteStatus, setOffer, setSortType } = offerSlice.actions;
