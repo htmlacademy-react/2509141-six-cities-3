@@ -1,5 +1,5 @@
 import { ShortOffers } from 'types/offer';
-import { MAX_NEAR_PLACES_COUNT, PlaceCardSource } from 'const';
+import { PlaceCardSource } from 'const';
 import PlaceCard from 'components/places-list/place-card/place-card';
 
 
@@ -13,7 +13,7 @@ function NearPlaces({ offers }: NearPlacesProps) {
       <section className="near-places places">
         <h2 className="near-places__title">Other places in the neighbourhood</h2>
         <div className="near-places__list places__list">
-          {offers.slice(0, MAX_NEAR_PLACES_COUNT).map((offer) => <PlaceCard offer={offer} source={PlaceCardSource.NearPlaces} key={offer.id} />)}
+          {offers.map((offer) => <PlaceCard offer={offer} source={PlaceCardSource.NearPlaces} key={offer.id} />)}
         </div>
       </section>
     </div>

@@ -6,7 +6,7 @@ import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 's
 import { setOffer } from 'store/slices/offer-slice/offer-slice';
 import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { MapSource } from 'const';
+import { MapSource, MAX_NEAR_PLACES_COUNT } from 'const';
 import { MemoHeaderNav } from 'components/header-nav/header-nav';
 import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import Loading from 'pages/loading/loading';
@@ -26,10 +26,10 @@ function Offer() {
   const dispatch = useAppDispatch();
   const offer = useAppSelector(getOffer);
   const hasError = useAppSelector(getErrorStatus);
-  const nearbyOffers = useAppSelector(getNearbyOffers);
-
+  const nearbyOffers = useAppSelector(getNearbyOffers).slice(0, MAX_NEAR_PLACES_COUNT);
 
   const isLoading = (offer === undefined);
+
 
   useEffect(() => {
     dispatch(fetchOfferAction(id));

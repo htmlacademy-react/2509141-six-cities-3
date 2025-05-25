@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT, MapSource } from 'const';
-import { ShortOffers, Location, BaseOffer } from 'types/offer';
+import { Location, BaseOffer, BaseOffers } from 'types/offer';
 import useMap from 'hooks/use-map';
 import 'leaflet/dist/leaflet.css';
 
@@ -9,7 +9,7 @@ import 'leaflet/dist/leaflet.css';
 type MapProps = {
   source: MapSource;
   location: Location;
-  offers?: ShortOffers;
+  offers?: BaseOffers;
   selectedOffer?: BaseOffer;
 };
 
@@ -26,23 +26,24 @@ const currentCustomIcon = new Icon({
 });
 
 
-function Map({source, location, offers, selectedOffer}: MapProps) {
-  const centerLocation = (selectedOffer && source === MapSource.Offer)
-    ? selectedOffer.location
-    : location;
-
+function Map({ source, location, offers, selectedOffer }: MapProps) {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, centerLocation);
+  const map = useMap(mapRef, location);
   const markerLayer = useRef(layerGroup());
+
+
+  offers = selectedOffer && offers && (source === MapSource.Offer)
+    ? [...offers, selectedOffer]
+    : offers;
 
 
   useEffect(() => {
     if (map) {
-      map.setView([centerLocation.latitude, centerLocation.longitude], centerLocation.zoom);
+      map.setView([location.latitude, location.longitude], location.zoom);
       markerLayer.current.addTo(map);
       markerLayer.current.clearLayers();
     }
-  }, [centerLocation, map]);
+  }, [location, map]);
 
   useEffect(() => {
     if (map && offers) {

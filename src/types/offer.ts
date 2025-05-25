@@ -45,4 +45,5 @@ export type FullOffer = BaseOffer & {
 };
 
 export type ShortOffers = ShortOffer[];
+export type BaseOffers = BaseOffer[];
 export type FullOffers = FullOffer[];
