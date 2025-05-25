@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ShortOffer } from 'types/offer';
 import { AppRoute, PlaceCardSource } from 'const';
 import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
-import { MemoBookmarkButton } from 'components/bookmark-button/bookmark-button';
+import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import PremiumMark from './premium-mark/premium-mark';
 
 
@@ -18,9 +18,8 @@ function PlaceCard({ offer, source, onListItemHover }: PlaceCardProps) {
   const width = isFavorite ? 150 : 260;
   const height = isFavorite ? 110 : 200;
 
-  const handleListItemHover = () => {
+  const handleListItemHover = () =>
     onListItemHover?.(offer);
-  };
 
   return (
     <article
@@ -29,10 +28,7 @@ function PlaceCard({ offer, source, onListItemHover }: PlaceCardProps) {
     >
       <PremiumMark isPremium={offer.isPremium} isCardMode />
       <div className={`${source}__image-wrapper place-card__image-wrapper`}>
-
-        {/* ТЗ: Клик по заголовку карточки выполняет переход на страницу с подробной информацией о предложении.
-            ❔ А что тогда должен делать клик по изображению? */}
-        <Link to={''}>
+        <Link to={`${AppRoute.Offer}/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width={width} height={height} alt="Place image"/>
         </Link>
       </div>
@@ -42,7 +38,7 @@ function PlaceCard({ offer, source, onListItemHover }: PlaceCardProps) {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <MemoBookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode />
+          <BookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -51,8 +47,6 @@ function PlaceCard({ offer, source, onListItemHover }: PlaceCardProps) {
           </div>
         </div>
         <h2 className="place-card__name">
-          {/*TODO: &amp;
-           <a href="#">Beautiful &amp; luxurious apartment at great location</a> */}
           <Link to={`${AppRoute.Offer}/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{capitalizeFirstLetter(offer.type)}</p>

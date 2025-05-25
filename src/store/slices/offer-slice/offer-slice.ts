@@ -3,7 +3,7 @@ import { fetchOfferAction, fetchOffersAction } from 'store/api-actions';
 import { FullOffer, ShortOffers } from 'types/offer';
 import { OfferSlice } from 'types/state';
 import { findOffer } from 'utils/util';
-import { SortToTop, SortToHighPrice, SortToLowPrice } from 'utils/sort';
+import { sortToTop, sortToHighPrice, sortToLowPrice } from 'utils/sort';
 import { NameSpace, SortType } from 'const';
 
 
@@ -35,9 +35,14 @@ export const offerSlice = createSlice({
         return;
       }
 
+      if (state.fullOffer) {
+        state.fullOffer.isFavorite = !offer.isFavorite;
+      }
+
       state.favoriteOffers = offer.isFavorite
         ? state.favoriteOffers.filter((favorite) => favorite.id !== id)
         : [...state.favoriteOffers, offer];
+
 
       offer.isFavorite = !offer.isFavorite;
     },
@@ -55,13 +60,13 @@ export const offerSlice = createSlice({
 
       switch (sortType) {
         case SortType.Top:
-          state.sortedOffers.sort(SortToTop);
+          state.sortedOffers.sort(sortToTop);
           break;
         case SortType.ToHighPrice:
-          state.sortedOffers.sort(SortToHighPrice);
+          state.sortedOffers.sort(sortToHighPrice);
           break;
         case SortType.ToLowPrice:
-          state.sortedOffers.sort(SortToLowPrice);
+          state.sortedOffers.sort(sortToLowPrice);
           break;
         default:
           state.sortedOffers = state.shortOffers;

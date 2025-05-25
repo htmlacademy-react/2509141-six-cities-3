@@ -16,7 +16,7 @@ export const fetchOffersAction = createAsyncThunk<ShortOffers, undefined, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchOffers',
+  'offer/fetchOffers',
   async (_arg, { extra: api }) => {
     const { data } = await api.get<ShortOffers>(APIRoute.Offers);
     return data;
@@ -29,7 +29,7 @@ export const fetchFavoritesAction = createAsyncThunk<void, undefined, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchFavorites',
+  'offer/fetchFavorites',
   async (_arg, { dispatch, extra: api }) => {
     await api.get<ShortOffers>(`${APIRoute.Favorites}`)
       .then((response) => dispatch(setFavoriteOffers(response.data)));
@@ -42,7 +42,7 @@ export const toggleFavoriteStatusAction = createAsyncThunk<void, { id: string; i
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/toggleFavoriteStatus',
+  'offer/toggleFavoriteStatus',
   async ({ id, isFavorite }, { dispatch, getState, extra: api }) => {
     const state = getState();
     const authorizationStatus = state[NameSpace.User].authorizationStatus;
@@ -76,7 +76,7 @@ export const fetchNearbyOffersAction = createAsyncThunk<void, string, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchNearbyOffers',
+  'offer/fetchNearbyOffers',
   async (id, { dispatch, extra: api }) => {
     await api.get<ShortOffers>(`${APIRoute.Offers}/${id}/nearby`)
       .then((response) => dispatch(setNearbyOffers(response.data)));

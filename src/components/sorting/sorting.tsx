@@ -36,7 +36,6 @@ function Sorting() {
         </svg>
       </span>
       <ul className={`places__options places__options--custom ${openedClass}`}>
-        {/* ❔ Передать sortType в props лучше чем вызывать useAppSelector в каждом из <SortTypeElement>? */}
         {Object.values(SortType).map((type) => <SortTypeElement value={type} selectedType={sortType} key={type} onClick={handleListChange} />)}
       </ul>
     </form>

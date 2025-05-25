@@ -6,9 +6,9 @@ import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from 's
 import { setOffer } from 'store/slices/offer-slice/offer-slice';
 import { getPercentRating, capitalizeFirstLetter } from 'utils/util';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { MapSource } from 'const';
-import { MemoBookmarkButton } from 'components/bookmark-button/bookmark-button';
+import { MapSource, MAX_NEAR_PLACES_COUNT } from 'const';
 import { MemoHeaderNav } from 'components/header-nav/header-nav';
+import BookmarkButton from 'components/bookmark-button/bookmark-button';
 import Loading from 'pages/loading/loading';
 import NotFound from 'pages/not-found/not-found';
 import PremiumMark from 'components/places-list/place-card/premium-mark/premium-mark';
@@ -26,17 +26,16 @@ function Offer() {
   const dispatch = useAppDispatch();
   const offer = useAppSelector(getOffer);
   const hasError = useAppSelector(getErrorStatus);
-  const nearbyOffers = useAppSelector(getNearbyOffers);
-
+  const nearbyOffers = useAppSelector(getNearbyOffers).slice(0, MAX_NEAR_PLACES_COUNT);
 
   const isLoading = (offer === undefined);
+
 
   useEffect(() => {
     dispatch(fetchOfferAction(id));
     dispatch(fetchNearbyOffersAction(id));
     dispatch(fetchReviewsAction(id));
 
-    // ❔ Это не нарушает Д16. (Логика изменения состояния описывается в редьюсере, а не в компоненте)?
     return () => {
       dispatch(setOffer(undefined));
     };
@@ -70,7 +69,7 @@ function Offer() {
                 <h1 className="offer__name">
                   {offer.title}
                 </h1>
-                <MemoBookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode={false} />
+                <BookmarkButton offerId={offer.id} isFavorite={offer.isFavorite} isCardMode={false} />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">

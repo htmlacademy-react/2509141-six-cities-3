@@ -1,4 +1,4 @@
-import { FormEvent, ChangeEvent, useState, useRef, useEffect, useCallback, memo } from 'react';
+import { FormEvent, useState, useRef, useEffect, memo } from 'react';
 import { getErrorStatus, getSendingStatus } from 'store/slices/review-slice/selectors';
 import { getAuthStatus } from 'store/slices/user-slice/selectors';
 import { addReviewAction } from 'store/api-actions';
@@ -18,7 +18,6 @@ function ReviewForm() {
   const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
 
-  // ❔ Вызывает ререндер при вводе каждого символа. Хорошо ли это?
   const form = useRef<HTMLFormElement | null>(null);
 
   const formDisabled = isSending;
@@ -33,23 +32,12 @@ function ReviewForm() {
     }
   }, [dispatch, isSending, hasError]);
 
+
   const handleTextareaInput = (evt: FormEvent<HTMLTextAreaElement>) => {
     const inputText = evt.currentTarget.value;
 
     setText(inputText);
   };
-
-  // ❔ Не работает, если выбрать ту же звезду сразу после отправки формы
-  // Разве form.current?.reset() не должен сбросить последний выбор?
-  const handleInputChange = useCallback(
-    (evt: ChangeEvent<HTMLInputElement>) => {
-      const value = +evt.target.value;
-
-      setRating(value);
-    },
-    []
-  );
-
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -65,7 +53,7 @@ function ReviewForm() {
     : (
       <form className="reviews__form form" ref={form} onSubmit={handleFormSubmit}>
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
-        <MemoStars formDisabled={formDisabled} onChange={handleInputChange} />
+        <MemoStars formDisabled={formDisabled} onClick={setRating} />
         <textarea
           className="reviews__textarea form__textarea"
           id="review" name="review"

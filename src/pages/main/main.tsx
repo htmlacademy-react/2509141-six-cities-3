@@ -6,7 +6,7 @@ import { CityName, DEFAULT_CITY } from 'const';
 import { findOffersInCity } from 'utils/util';
 import { useAppSelector } from 'hooks';
 import { MemoHeaderNav } from 'components/header-nav/header-nav';
-import { MemoCityList } from 'components/city-list/city-list';
+import CityList from 'components/city-list/city-list';
 import Loading from 'pages/loading/loading';
 import Places from 'components/main/places/places';
 import NoPlaces from 'components/main/no-places/no-places';
@@ -44,7 +44,7 @@ function Main() {
 
         <main className={`page__main page__main--index ${emptyClass}`}>
           <h1 className="visually-hidden">Cities</h1>
-          <MemoCityList activeCity={city} />
+          <CityList activeCity={city} />
 
           <div className="cities">
             {
