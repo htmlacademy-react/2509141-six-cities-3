@@ -3,6 +3,7 @@ import { addReviewAction, fetchReviewsAction } from 'store/api-actions';
 import { Reviews } from 'types/review';
 import { ReviewSlice } from 'types/state';
 import { NameSpace } from 'const';
+import { sortReviews } from 'utils/sort';
 
 
 const initialState: ReviewSlice = {
@@ -30,7 +31,7 @@ export const reviewSlice = createSlice({
         state.hasError = true;
       })
       .addCase(fetchReviewsAction.fulfilled, (state, action: PayloadAction<Reviews>) => {
-        state.reviews = action.payload;
+        state.reviews = action.payload.toSorted(sortReviews);
       });
   }
 });
