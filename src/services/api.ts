@@ -4,9 +4,16 @@ import { toast } from 'react-toastify';
 import { getToken } from './token';
 
 
+type Detail = {
+  messages: string[];
+  property: string;
+  value: string;
+}
+
 type DetailMessageType = {
-  type: string;
+  errorType: string;
   message: string;
+  details: Detail[];
 }
 
 const StatusCodeMapping: Record<number, boolean> = {
@@ -45,9 +52,12 @@ export const createAPI = () => {
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
       if (error.response && shouldDisplayError(error.response)) {
-        const detailMessage = (error.response.data);
+        const data = (error.response.data);
+        const message = data.errorType === 'VALIDATION_ERROR'
+          ? data.details[0].messages[0]
+          : data.message;
 
-        toast.warn(detailMessage.message);
+        toast.warn(message);
       }
 
       throw error;
