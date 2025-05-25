@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { ShortOffer, ShortOffers } from 'types/offer';
 import { CityLocations, CityName, MapSource } from 'const';
 import { MemoPlacesList } from 'components/places-list/places-list';
@@ -14,13 +14,6 @@ type PlacesProps = {
 function Places({ city, offers }: PlacesProps) {
   const [selectedOffer, setSelectedOffer] = useState<ShortOffer | undefined>(undefined);
 
-
-  const handleListItemHover = useCallback(
-    (offer: ShortOffer) => setSelectedOffer(offer),
-    []
-  );
-
-
   return (
     <div className="cities__places-container container">
 
@@ -28,7 +21,7 @@ function Places({ city, offers }: PlacesProps) {
         <h2 className="visually-hidden">Places</h2>
         <b className="places__found">{offers.length} places to stay in {city}</b>
         <MemoSorting />
-        <MemoPlacesList offers={offers} onListItemHover={handleListItemHover} />
+        <MemoPlacesList offers={offers} onListItemHover={setSelectedOffer} />
       </section>
 
       <div className="cities__right-section">

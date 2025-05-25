@@ -39,11 +39,6 @@ function ReviewForm() {
     setText(inputText);
   };
 
-
-  const handleStarClick = (value: number) =>
-    setRating(value);
-
-
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
@@ -58,7 +53,7 @@ function ReviewForm() {
     : (
       <form className="reviews__form form" ref={form} onSubmit={handleFormSubmit}>
         <label className="reviews__label form__label" htmlFor="review">Your review</label>
-        <MemoStars formDisabled={formDisabled} onClick={handleStarClick} />
+        <MemoStars formDisabled={formDisabled} onClick={setRating} />
         <textarea
           className="reviews__textarea form__textarea"
           id="review" name="review"

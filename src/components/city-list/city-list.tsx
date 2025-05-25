@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { CityName } from 'const';
 import CityLink from './city-link/city-link';
 
@@ -19,4 +18,4 @@ function CityList({ activeCity }: CityListProps) {
   );
 }
 
-export const MemoCityList = memo(CityList);
+export default CityList;

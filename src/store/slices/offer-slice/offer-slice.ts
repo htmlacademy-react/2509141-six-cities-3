@@ -35,14 +35,14 @@ export const offerSlice = createSlice({
         return;
       }
 
+      if (state.fullOffer) {
+        state.fullOffer.isFavorite = !offer.isFavorite;
+      }
+
       state.favoriteOffers = offer.isFavorite
         ? state.favoriteOffers.filter((favorite) => favorite.id !== id)
         : [...state.favoriteOffers, offer];
 
-
-      if (state.fullOffer) {
-        state.fullOffer.isFavorite = !offer.isFavorite;
-      }
 
       offer.isFavorite = !offer.isFavorite;
     },
